@@ -99,6 +99,8 @@ void draw()
   else if(mode == 2)
   {
     //Death Menu!
+    //Store score if larger then current global highscore!
+    //Maybe insult the player or something
   }
 }
 
