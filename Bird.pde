@@ -1,9 +1,4 @@
-class Bird
-{
-  //The centre of the bird circle
-  float y;
-
-  //The radius of the bird circle
+ 
   float radius;
 
   float yAcc;
