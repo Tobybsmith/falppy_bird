@@ -1,7 +1,7 @@
 import processing.sound.*;
 
 Bird b = new Bird();
-float gravity = 0.25;
+float gravity = 0.3;
 
 int mode = 0;
 int cooldown = 0;
@@ -9,6 +9,8 @@ int cooldown = 0;
 boolean hasJumped = false;
 
 boolean space = false;
+
+boolean isAlive = true;
 
 SoundFile file;
 
@@ -18,7 +20,7 @@ void setup()
   b.y = 100;
   b.radius = 40;
   b.yAcc = 1;
-  b.jumpSpeed = 5;
+  b.jumpSpeed = 6;
   background(200);
   noStroke();
   file = new SoundFile(this, "music.mp3");
@@ -26,6 +28,7 @@ void setup()
 
 void draw()
 {
+  
   if (mode == 0)
   {
     int boxX = width/2 - 100;
@@ -45,6 +48,7 @@ void draw()
     rect(0, height - 20, width, 30);
     if(mousePressed)
     {
+      //If the user clicks on the box
       if((mouseX > boxX && mouseX < boxX + 200) && (mouseY > boxY && mouseY < boxY + 50))
       {
         mode = 1;
@@ -59,10 +63,12 @@ void draw()
     if (b.y > height)
     {
       b.y = height; //change to kill player
+      isAlive = false;
     }
     if (b.y < 0)
     {
       b.y = 0; //change to kill player
+      isAlive = false;
     }
     b.yAcc = b.yAcc + gravity;
     if (hasJumped)
@@ -85,6 +91,14 @@ void draw()
       }
     }
     b.show();
+    if(!isAlive)
+    {
+      mode = 2;
+    }
+  }
+  else if(mode == 2)
+  {
+    //Death Menu!
   }
 }
 
