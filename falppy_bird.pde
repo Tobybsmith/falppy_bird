@@ -114,7 +114,8 @@ void draw()
     //Store score if larger then current global highscore!
     //Maybe insult the player or something
     
-    //add following code in once score exists for pipes
+    
+    //add following code in once score exists
     
     //if (score > highscore)
     //{
