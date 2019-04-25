@@ -1,5 +1,9 @@
 import processing.sound.*;
 
+BufferedReader reader;
+PrintWriter output;
+String highscore;
+
 Bird b = new Bird();
 float gravity = 0.3;
 
@@ -17,6 +21,13 @@ SoundFile file;
 void setup()
 {
   size(1000, 500);
+  reader = createReader("highscore.txt");
+  try {
+    highscore = reader.readLine();
+  } catch (IOException e) {
+    e.printStackTrace();
+    highscore = "0";
+  }
   b.y = 100;
   b.radius = 40;
   b.yAcc = 1;
@@ -28,6 +39,7 @@ void setup()
 
 void draw()
 {
+  output = createWriter("highscore.txt");
   
   if (mode == 0)
   {
@@ -101,6 +113,19 @@ void draw()
     //Death Menu!
     //Store score if larger then current global highscore!
     //Maybe insult the player or something
+    
+    //add following code in once score exists for pipes
+    
+    //if (score > highscore)
+    //{
+      //output.println(score);
+    //}
+    //else
+    //{
+      //output.println(highscore);
+    //}
+    //output.flush();
+    //output.close();
   }
 }
 
