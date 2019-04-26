@@ -5,10 +5,17 @@ PrintWriter output;
 String highscore;
 
 Bird b = new Bird();
-float gravity = 0.3;
+
+ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
+Pipe p1 = new Pipe();
+
+float gravity = 0.35;
+
+int score = 0;
 
 int mode = 0;
 int cooldown = 0;
+int pipeSpeed = 3;
 
 boolean hasJumped = false;
 
@@ -24,14 +31,22 @@ void setup()
   reader = createReader("highscore.txt");
   try {
     highscore = reader.readLine();
-  } catch (IOException e) {
+  } 
+  catch (IOException e) {
     e.printStackTrace();
     highscore = "0";
   }
+
   b.y = 100;
   b.radius = 40;
   b.yAcc = 1;
   b.jumpSpeed = 6;
+
+  p1.x = width;
+  p1.y = random(height/2 - b.radius*2);
+  p1.xLen = 20;
+  p1.yLen = p1.y - height;
+
   background(200);
   noStroke();
   file = new SoundFile(this, "music.mp3");
@@ -40,7 +55,7 @@ void setup()
 void draw()
 {
   output = createWriter("highscore.txt");
-  
+
   if (mode == 0)
   {
     int boxX = width/2 - 100;
@@ -58,18 +73,19 @@ void draw()
     text("Click to play!", boxX + 7, boxY + 35);
     fill(#1b5e20);
     rect(0, height - 20, width, 30);
-    if(mousePressed)
+    if (mousePressed)
     {
       //If the user clicks on the box
-      if((mouseX > boxX && mouseX < boxX + 200) && (mouseY > boxY && mouseY < boxY + 50))
+      if ((mouseX > boxX && mouseX < boxX + 200) && (mouseY > boxY && mouseY < boxY + 50))
       {
         mode = 1;
       }
     }
   } else if (mode == 1)
   {
-    background(200);
+    background(#4fc3f7);
     fill(0);
+    
 
     b.y = b.y + b.yAcc;
     if (b.y > height)
@@ -102,28 +118,54 @@ void draw()
         cooldown = 0;
       }
     }
+
     b.show();
-    if(!isAlive)
+    p1.show();
+    p1.update();
+
+    if (!isAlive)
     {
       mode = 2;
     }
-  }
-  else if(mode == 2)
+  } else if (mode == 2)
   {
+
     //Death Menu!
+    fill(#ffc107);
+    rect(width/2 - 180, 200, 310, 75);
+    textSize(30);
+    fill(#fb8c00);
+    text("You Died! Score: " + score, width/2 - 160, 250);
+    fill(#ffc107);
+    rect(width/2 - 110, 310, 180, 55);
+    textSize(30);
+    fill(#fb8c00);
+    text("Play Again?", width/2 - 100, 350);
+    if (mousePressed)
+    {
+      if ((mouseX > width/2 - 110 && mouseX < width/2 - 110 + 180) && (mouseY > 310 && mouseY < 310 + 55))
+      {
+        b.y = 100;
+        isAlive = true;
+        b.yAcc = 0;
+        //Pipes reset
+        mode = 1;
+        
+      }
+    }
     //Store score if larger then current global highscore!
     //Maybe insult the player or something
-    
-    
+
+
     //add following code in once score exists
-    
+
     //if (score > highscore)
     //{
-      //output.println(score);
+    //output.println(score);
     //}
     //else
     //{
-      //output.println(highscore);
+    //output.println(highscore);
     //}
     //output.flush();
     //output.close();
@@ -132,7 +174,7 @@ void draw()
 
 void keyReleased()
 {
-  if(key == ' ')
+  if (key == ' ')
   {
     space = true;
   }
