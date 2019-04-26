@@ -1,17 +1,14 @@
 class Bird
 {
-  //The centre of the bird circle
   float y;
-
-  //The radius of the bird circle
   float radius;
-
   float yAcc;
-
   float jumpSpeed;
+  color c;
 
   void show()
   {
+    fill(c);
     ellipse(75, this.y, this.radius, this.radius);
   }
 }

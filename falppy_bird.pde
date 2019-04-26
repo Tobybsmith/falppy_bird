@@ -10,24 +10,22 @@ ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
 Pipe p1 = new Pipe();
 
 float gravity = 0.35;
-
 int score = 0;
-
 int mode = 0;
 int cooldown = 0;
 int pipeSpeed = 3;
 
 boolean hasJumped = false;
-
 boolean space = false;
-
 boolean isAlive = true;
 
 SoundFile file;
 
 void setup()
 {
+  
   size(1000, 500);
+  //This messes with 
   reader = createReader("highscore.txt");
   try {
     highscore = reader.readLine();
@@ -41,6 +39,7 @@ void setup()
   b.radius = 40;
   b.yAcc = 1;
   b.jumpSpeed = 6;
+  b.c = #ffc107;
 
   p1.x = width;
   p1.y = random(height/2 - b.radius*2);
@@ -85,17 +84,16 @@ void draw()
   {
     background(#4fc3f7);
     fill(0);
-    
 
     b.y = b.y + b.yAcc;
-    if (b.y > height)
+    if (b.y > height - b.radius/2)
     {
-      b.y = height; //change to kill player
+      b.y = height - b.radius/2; //change to kill player
       isAlive = false;
     }
-    if (b.y < 0)
+    if (b.y < 0 + b.radius/2)
     {
-      b.y = 0; //change to kill player
+      b.y = 0 + b.radius/2; //change to kill player
       isAlive = false;
     }
     b.yAcc = b.yAcc + gravity;
@@ -150,7 +148,6 @@ void draw()
         b.yAcc = 0;
         //Pipes reset
         mode = 1;
-        
       }
     }
     //Store score if larger then current global highscore!
