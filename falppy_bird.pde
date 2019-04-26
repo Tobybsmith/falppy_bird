@@ -27,12 +27,25 @@ void setup()
   size(1000, 500);
   //This messes with 
   reader = createReader("highscore.txt");
-  try {
+  
+  try
+  {
     highscore = reader.readLine();
+    try
+    {
+      Integer.parseInt(highscore);
+    }
+      catch (Exception e)
+    {
+      highscore = "0";
+      output = createWriter("highscore.txt");
+      output.println("0");
+      output.flush();
+      output.close();
+    }
   } 
   catch (IOException e) {
     e.printStackTrace();
-    highscore = "0";
   }
 
   b.y = 100;
@@ -53,8 +66,6 @@ void setup()
 
 void draw()
 {
-  output = createWriter("highscore.txt");
-
   if (mode == 0)
   {
     int boxX = width/2 - 100;
@@ -130,10 +141,10 @@ void draw()
 
     //Death Menu!
     fill(#ffc107);
-    rect(width/2 - 180, 200, 310, 75);
+    rect(width/2 - 220, 200, 525, 75);
     textSize(30);
     fill(#fb8c00);
-    text("You Died! Score: " + score, width/2 - 160, 250);
+    text("You Died! Score: " + score + " Highscore: " + highscore, width/2 - 205, 250);
     fill(#ffc107);
     rect(width/2 - 110, 310, 180, 55);
     textSize(30);
@@ -154,18 +165,18 @@ void draw()
     //Maybe insult the player or something
 
 
-    //add following code in once score exists
-
-    //if (score > highscore)
-    //{
-    //output.println(score);
-    //}
-    //else
-    //{
-    //output.println(highscore);
-    //}
-    //output.flush();
-    //output.close();
+    output = createWriter("highscore.txt");
+    
+    if (score > Integer.parseInt(highscore))
+    {
+    output.println(score);
+    }
+    else
+    {
+    output.println(highscore);
+    }
+    output.flush();
+    output.close();
   }
 }
 
