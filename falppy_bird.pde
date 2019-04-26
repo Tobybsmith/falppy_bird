@@ -8,12 +8,14 @@ Bird b = new Bird();
 
 ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
 Pipe p1 = new Pipe();
+Pipe p2 = new Pipe();
 
 float gravity = 0.35;
 int score = 0;
 int mode = 0;
 int cooldown = 0;
 int pipeSpeed = 3;
+int pipeSpace = 100;
 
 boolean hasJumped = false;
 boolean space = false;
@@ -23,11 +25,11 @@ SoundFile file;
 
 void setup()
 {
-  
+
   size(1000, 500);
   //This messes with 
   reader = createReader("highscore.txt");
-  
+
   try
   {
     highscore = reader.readLine();
@@ -35,7 +37,7 @@ void setup()
     {
       Integer.parseInt(highscore);
     }
-      catch (Exception e)
+    catch (Exception e)
     {
       highscore = "0";
       output = createWriter("highscore.txt");
@@ -58,6 +60,15 @@ void setup()
   p1.y = random(height/2 - b.radius*2);
   p1.xLen = 20;
   p1.yLen = p1.y - height;
+  p1.c = #FFFFFF;
+  pipeList.add(p1);
+
+  p2.x = p1.x;
+  p2.y = p1.y + pipeSpace;
+  p2.xLen = p1.xLen;
+  p2.yLen = p2.y + height;
+  p2.c = p1.c;
+  pipeList.add(p2);
 
   background(200);
   noStroke();
@@ -128,9 +139,16 @@ void draw()
       }
     }
 
+    if (frameCount%60 == 0)
+    {
+      //Add new pipes to pipeList
+    }
+
     b.show();
     p1.show();
     p1.update();
+    p2.show();
+    p2.update();
 
     if (!isAlive)
     {
@@ -166,14 +184,13 @@ void draw()
 
 
     output = createWriter("highscore.txt");
-    
+
     if (score > Integer.parseInt(highscore))
     {
-    output.println(score);
-    }
-    else
+      output.println(score);
+    } else
     {
-    output.println(highscore);
+      output.println(highscore);
     }
     output.flush();
     output.close();
