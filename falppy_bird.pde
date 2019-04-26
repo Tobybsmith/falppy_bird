@@ -20,6 +20,7 @@ int pipeSpace = 100;
 boolean hasJumped = false;
 boolean space = false;
 boolean isAlive = true;
+boolean safe = false;
 
 SoundFile file;
 
@@ -55,20 +56,14 @@ void setup()
   b.yAcc = 1;
   b.jumpSpeed = 6;
   b.c = #ffc107;
-
-  p1.x = width;
-  p1.y = random(height/2 - b.radius*2);
+  
+  p1.x = width - 50;
+  p1.y = random(height/2 - b.radius);
+  p1.yBottom = p1.y + 200;
+  p1.yLenBottom = p1.yBottom + height;
+  p1.c = #FFFFFF;
   p1.xLen = 20;
   p1.yLen = p1.y - height;
-  p1.c = #FFFFFF;
-  pipeList.add(p1);
-
-  p2.x = p1.x;
-  p2.y = p1.y + pipeSpace;
-  p2.xLen = p1.xLen;
-  p2.yLen = p2.y + height;
-  p2.c = p1.c;
-  pipeList.add(p2);
 
   background(200);
   noStroke();
@@ -141,14 +136,28 @@ void draw()
 
     if (frameCount%60 == 0)
     {
-      //Add new pipes to pipeList
+      pipeList.add(new Pipe());
+    }
+    
+    if(p1.hits(b))
+    {
+      isAlive = false;
     }
 
     b.show();
     p1.show();
     p1.update();
-    p2.show();
-    p2.update();
+    
+    for(int i = pipeList.size() - 1; i > 0; i--)
+    {
+      Pipe p2 = pipeList.get(i);
+      p2.show();
+      p2.update();
+      if(p2.hits(b))
+      {
+        isAlive = false;
+      }
+    }
 
     if (!isAlive)
     {

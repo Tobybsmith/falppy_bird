@@ -1,6 +1,7 @@
 class Bird
 {
   float y;
+  float x = 75;
   float radius;
   float yAcc;
   float jumpSpeed;
