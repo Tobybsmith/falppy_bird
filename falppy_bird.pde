@@ -1,4 +1,4 @@
-//import processing.sound.*;
+import processing.sound.*;
 
 BufferedReader reader;
 PrintWriter output;
@@ -21,7 +21,7 @@ boolean space = false;
 boolean isAlive = true;
 boolean safe = false;
 
-//SoundFile file;
+SoundFile file;
 
 void setup()
 {
@@ -58,7 +58,7 @@ void setup()
 
   background(200);
   noStroke();
-  //file = new SoundFile(this, "music.mp3");
+  file = new SoundFile(this, "music.mp3");
 }
 
 void draw()
