@@ -4,6 +4,8 @@ BufferedReader reader;
 PrintWriter output;
 String highscore;
 
+PImage sprite;
+
 Bird b = new Bird();
 
 ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
@@ -49,20 +51,21 @@ void setup()
   catch (IOException e) {
     e.printStackTrace();
   }
+  
+  sprite = loadImage("rossJamieson.jpg");
 
   b.y = 100;
   b.radius = 40;
   b.yAcc = 1;
   b.jumpSpeed = 7;
   b.c = #ffc107;
-
-  background(200);
   noStroke();
   file = new SoundFile(this, "music.mp3");
 }
 
 void draw()
 {
+  
   if (mode == 0)
   {
     int boxX = width/2 - 100;
@@ -80,6 +83,7 @@ void draw()
     text("Click to play!", boxX + 7, boxY + 35);
     fill(#1b5e20);
     rect(0, height - 20, width, 30);
+    
     if (mousePressed)
     {
       //If the user clicks on the box

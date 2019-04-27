@@ -9,19 +9,7 @@ class Bird
 
   void show()
   {
-    fill(c);
-    if(this.yAcc > 0)
-    {
-      c = #0000FF;
-    }
-    else if(this.yAcc < 0)
-    {
-      c = #FF0000;
-    }
-    else
-    {
-      c = #000000;
-    }
-    ellipse(75, this.y, this.radius, this.radius);
+    sprite.resize(40,40);
+    image(sprite, this.x - 20, this.y - 20); 
   }
 }
