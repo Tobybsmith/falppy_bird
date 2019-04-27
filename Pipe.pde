@@ -1,12 +1,12 @@
 class Pipe
 {
-  float x;
-  float y;
-  float yBottom;
-  float yLenBottom;
-  float xLen;
-  float yLen;
-  color c;
+  float x = width;
+  float y = random(height/2 - b.radius);
+  float yBottom = this.y + 150;
+  float yLenBottom = yBottom + height;
+  float xLen = 20;
+  float yLen = y - height;
+  color c = #1b5e20;
   void show()
   {
     fill(c);
@@ -23,7 +23,6 @@ class Pipe
     {
       if (b.x + b.radius/2 > this.x && b.x - b.radius/2 < this.x + this.xLen)
       {
-        this.c = #0F0FAF;
         return true;
         
       }

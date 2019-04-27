@@ -7,8 +7,6 @@ String highscore;
 Bird b = new Bird();
 
 ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
-Pipe p1 = new Pipe();
-Pipe p2 = new Pipe();
 
 float gravity = 0.35;
 int score = 0;
@@ -54,16 +52,8 @@ void setup()
   b.y = 100;
   b.radius = 40;
   b.yAcc = 1;
-  b.jumpSpeed = 6;
+  b.jumpSpeed = 7;
   b.c = #ffc107;
-  
-  p1.x = width - 50;
-  p1.y = random(height/2 - b.radius);
-  p1.yBottom = p1.y + 200;
-  p1.yLenBottom = p1.yBottom + height;
-  p1.c = #FFFFFF;
-  p1.xLen = 20;
-  p1.yLen = p1.y - height;
 
   background(200);
   noStroke();
@@ -134,28 +124,38 @@ void draw()
       }
     }
 
-    if (frameCount%60 == 0)
+    if (frameCount%75 == 0)
     {
       pipeList.add(new Pipe());
+      
     }
     
-    if(p1.hits(b))
-    {
-      isAlive = false;
-    }
-
     b.show();
-    p1.show();
-    p1.update();
     
-    for(int i = pipeList.size() - 1; i > 0; i--)
+    boolean passed = false;
+    
+    /*
+    Some properties of the bird to score points we should take advantage of:
+    - If the bird does not collide with a pipe (in the space) then the player has
+    passed that pipe and should be awarded one point
+    - If the player's X coordinate is inside the pipe space and they are alive, award one point
+    - If the player hits a new rectangle in the pipe (would be made) award a point and remove collision
+    (to avoid hundreds of points per pipe with the increment function)
+    */
+    
+    for(int i = pipeList.size() - 1; i >= 0; i--)
     {
-      Pipe p2 = pipeList.get(i);
-      p2.show();
-      p2.update();
-      if(p2.hits(b))
+      Pipe p = pipeList.get(i);
+      p.update();
+      if(p.hits(b))
       {
         isAlive = false;
+        p.show();
+      }
+      else
+      {
+        passed = true;
+        p.show();
       }
     }
 
@@ -184,7 +184,7 @@ void draw()
         b.y = 100;
         isAlive = true;
         b.yAcc = 0;
-        //Pipes reset
+        pipeList.clear();
         mode = 1;
       }
     }

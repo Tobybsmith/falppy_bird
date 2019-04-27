@@ -3,8 +3,6 @@ enjoy!
 
 //TODO
 
--Multiple Pipe Generation
-
 -Pipe.reset();
 
 -Alternate Colour Scheme
