@@ -1,4 +1,4 @@
-import processing.sound.*;
+//import processing.sound.*;
 
 BufferedReader reader;
 PrintWriter output;
@@ -10,6 +10,7 @@ ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
 
 float gravity = 0.35;
 int score = 0;
+int justScored;
 int mode = 0;
 int cooldown = 0;
 int pipeSpeed = 3;
@@ -20,7 +21,7 @@ boolean space = false;
 boolean isAlive = true;
 boolean safe = false;
 
-SoundFile file;
+//SoundFile file;
 
 void setup()
 {
@@ -57,7 +58,7 @@ void setup()
 
   background(200);
   noStroke();
-  file = new SoundFile(this, "music.mp3");
+  //file = new SoundFile(this, "music.mp3");
 }
 
 void draw()
@@ -147,6 +148,7 @@ void draw()
     {
       Pipe p = pipeList.get(i);
       p.update();
+      score += p.score;
       if(p.hits(b))
       {
         isAlive = false;
@@ -162,6 +164,11 @@ void draw()
     if (!isAlive)
     {
       mode = 2;
+      if (score > Integer.parseInt(highscore))
+      {
+        highscore = str(score);
+      }
+      justScored = score;
     }
   } else if (mode == 2)
   {
@@ -171,7 +178,7 @@ void draw()
     rect(width/2 - 220, 200, 525, 75);
     textSize(30);
     fill(#fb8c00);
-    text("You Died! Score: " + score + " Highscore: " + highscore, width/2 - 205, 250);
+    text("You Died! Score: " + justScored + " Highscore: " + highscore, width/2 - 205, 250);
     fill(#ffc107);
     rect(width/2 - 110, 310, 180, 55);
     textSize(30);
@@ -193,7 +200,6 @@ void draw()
 
 
     output = createWriter("highscore.txt");
-
     if (score > Integer.parseInt(highscore))
     {
       output.println(score);
@@ -204,6 +210,7 @@ void draw()
     output.flush();
     output.close();
   }
+  score = 0;
 }
 
 void keyReleased()
