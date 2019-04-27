@@ -21,9 +21,11 @@ class Pipe
   {
     if (b.y + b.radius/2 > this.yBottom || b.y - b.radius/2 < this.y)
     {
-      if (b.x + b.radius/2 > this.x && b.x + b.radius/2 < this.x + this.xLen)
+      if (b.x + b.radius/2 > this.x && b.x - b.radius/2 < this.x + this.xLen)
       {
+        this.c = #0F0FAF;
         return true;
+        
       }
       
     }
