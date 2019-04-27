@@ -99,11 +99,6 @@ void draw()
       b.y = height - b.radius/2; //change to kill player
       isAlive = false;
     }
-    if (b.y < 0 + b.radius/2)
-    {
-      b.y = 0 + b.radius/2; //change to kill player
-      isAlive = false;
-    }
     b.yAcc = b.yAcc + gravity;
     if (hasJumped)
     {
