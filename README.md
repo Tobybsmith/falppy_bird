@@ -2,7 +2,6 @@
 enjoy!
 
 //TODO
--Collision with pipes (if(pipe.hits(bird) { //do stuff })
 
 -Pipe.reset();
 
