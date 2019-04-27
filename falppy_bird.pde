@@ -99,6 +99,11 @@ void draw()
       b.y = height - b.radius/2; //change to kill player
       isAlive = false;
     }
+    if(b.y < b.radius/2)
+    {
+      b.y = b.radius/2;
+      isAlive = false;
+    }
     b.yAcc = b.yAcc + gravity;
     if (hasJumped)
     {
@@ -144,6 +149,10 @@ void draw()
       Pipe p = pipeList.get(i);
       p.update();
       score += p.score;
+      if(p.x + p.xLen < 0)
+      {
+        pipeList.remove(p);
+      }
       if(p.hits(b))
       {
         isAlive = false;
