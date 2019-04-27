@@ -3,7 +3,7 @@ enjoy!
 
 //TODO
 
--Pipe.reset();
+-Functional Scoring that works
 
 -Alternate Colour Scheme
 
