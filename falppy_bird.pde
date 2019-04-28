@@ -64,8 +64,8 @@ void setup()
   noStroke();
   
   music = new SoundFile(this, "music.wav");
-  music.amp(0.1);
-  music.play();
+  music.amp(0.5);
+  
   
   flap = new SoundFile(this, "sfxFlap.wav");
   flap.amp(0.3);
@@ -100,6 +100,7 @@ void draw()
       //If the user clicks on the box
       if ((mouseX > boxX && mouseX < boxX + 200) && (mouseY > boxY && mouseY < boxY + 50))
       {
+        music.loop();
         mode = 1;
       }
     }
