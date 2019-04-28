@@ -23,7 +23,9 @@ boolean space = false;
 boolean isAlive = true;
 boolean safe = false;
 
-SoundFile file;
+SoundFile music;
+SoundFile flap;
+SoundFile death;
 
 void setup()
 {
@@ -60,7 +62,16 @@ void setup()
   b.jumpSpeed = 7;
   b.c = #ffc107;
   noStroke();
-  file = new SoundFile(this, "music.mp3");
+  
+  music = new SoundFile(this, "music.wav");
+  music.amp(0.1);
+  music.play();
+  
+  flap = new SoundFile(this, "sfxFlap.wav");
+  flap.amp(0.3);
+  
+  death = new SoundFile(this, "sfxDeath.wav");
+  death.amp(0.1);
 }
 
 void draw()
@@ -102,11 +113,13 @@ void draw()
     {
       b.y = height - b.radius/2; //change to kill player
       isAlive = false;
+      death.play();
     }
     if(b.y < b.radius/2)
     {
       b.y = b.radius/2;
       isAlive = false;
+      death.play();
     }
     b.yAcc = b.yAcc + gravity;
     if (hasJumped)
@@ -160,6 +173,7 @@ void draw()
       if(p.hits(b))
       {
         isAlive = false;
+        death.play();
         p.show();
       }
       else
@@ -180,7 +194,7 @@ void draw()
     }
   } else if (mode == 2)
   {
-
+    
     //Death Menu!
     fill(#ffc107);
     rect(width/2 - 220, 200, 525, 75);
@@ -200,6 +214,7 @@ void draw()
         isAlive = true;
         b.yAcc = 0;
         pipeList.clear();
+        restart(music);
         mode = 1;
       }
     }
@@ -226,5 +241,13 @@ void keyReleased()
   if (key == ' ')
   {
     space = true;
+    flap.play();
   }
+}
+
+void restart(SoundFile file)
+{
+  file.stop();
+  delay(100);
+  file.play();
 }
