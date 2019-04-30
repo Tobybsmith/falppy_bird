@@ -137,15 +137,13 @@ void draw()
       }
     }
 
-    if (frameCount%75 == 0)
+    if (frameCount%100 == 0)
     {
       pipeList.add(new Pipe());
       
     }
     
     b.show();
-    
-    boolean passed = false;
     
     /*
     Some properties of the bird to score points we should take advantage of:
@@ -177,7 +175,6 @@ void draw()
       }
       else
       {
-        passed = true;
         p.show();
       }
     }

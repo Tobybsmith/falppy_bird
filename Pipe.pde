@@ -1,7 +1,7 @@
 class Pipe
 {
   float x = width;
-  float y = random(height/2 - b.radius);
+  float y = random(height/2);
   float yBottom = this.y + 150;
   float yLenBottom = yBottom + height;
   float xLen = 20;
