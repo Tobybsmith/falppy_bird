@@ -17,9 +17,9 @@ class Pipe
   void update()
   {
     this.x = this.x - pipeSpeed;
-    if (x <= 75 && score == 0)
+    if (x <= 75 && this.score == 0)
     {
-      score = 1;
+      this.score = 1;
     }
   }
   boolean hits(Bird b)
