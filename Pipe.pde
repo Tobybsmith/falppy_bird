@@ -8,6 +8,7 @@ class Pipe
   float yLen = y - height;
   color c = #1b5e20;
   int score = 0;
+  boolean passed = false;
   void show()
   {
     fill(c);
