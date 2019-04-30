@@ -1,4 +1,4 @@
-import processing.sound.*;
+//import processing.sound.*;
 
 BufferedReader reader;
 PrintWriter output;
@@ -23,9 +23,9 @@ boolean space = false;
 boolean isAlive = true;
 boolean safe = false;
 
-SoundFile music;
-SoundFile flap;
-SoundFile death;
+//SoundFile music;
+//SoundFile flap;
+//SoundFile death;
 
 void setup()
 {
@@ -63,15 +63,15 @@ void setup()
   b.c = #ffc107;
   noStroke();
   
-  music = new SoundFile(this, "music.wav");
-  music.amp(0.5);
+  //music = new SoundFile(this, "music.wav");
+  //music.amp(0.5);
   
   
-  flap = new SoundFile(this, "sfxFlap.wav");
-  flap.amp(0.3);
+  //flap = new SoundFile(this, "sfxFlap.wav");
+  //flap.amp(0.3);
   
-  death = new SoundFile(this, "sfxDeath.wav");
-  death.amp(0.1);
+  //death = new SoundFile(this, "sfxDeath.wav");
+  //death.amp(0.1);
 }
 
 void draw()
@@ -100,7 +100,7 @@ void draw()
       //If the user clicks on the box
       if ((mouseX > boxX && mouseX < boxX + 200) && (mouseY > boxY && mouseY < boxY + 50))
       {
-        music.loop();
+        //music.loop();
         mode = 1;
       }
     }
@@ -114,13 +114,7 @@ void draw()
     {
       b.y = height - b.radius/2; //change to kill player
       isAlive = false;
-      death.play();
-    }
-    if(b.y < b.radius/2)
-    {
-      b.y = b.radius/2;
-      isAlive = false;
-      death.play();
+      //death.play();
     }
     b.yAcc = b.yAcc + gravity;
     if (hasJumped)
@@ -166,15 +160,19 @@ void draw()
     {
       Pipe p = pipeList.get(i);
       p.update();
-      score += p.score;
+      if (p.score == 1 && !p.passed)
+      {
+        score += p.score;
+        p.passed = true;
+      }
       if(p.x + p.xLen < 0)
       {
-        pipeList.remove(p);
+        pipeList.remove(p); 
       }
       if(p.hits(b))
       {
         isAlive = false;
-        death.play();
+        //death.play();
         p.show();
       }
       else
@@ -215,7 +213,7 @@ void draw()
         isAlive = true;
         b.yAcc = 0;
         pipeList.clear();
-        restart(music);
+        //restart(music);
         mode = 1;
       }
     }
@@ -233,8 +231,8 @@ void draw()
     }
     output.flush();
     output.close();
+    score = 0;
   }
-  score = 0;
 }
 
 void keyReleased()
@@ -242,13 +240,13 @@ void keyReleased()
   if (key == ' ')
   {
     space = true;
-    flap.play();
+    //flap.play();
   }
 }
 
-void restart(SoundFile file)
-{
-  file.stop();
-  delay(100);
-  file.play();
-}
+//void restart(SoundFile file)
+//{
+  //file.stop();
+  //delay(100);
+  //file.play();
+//}
