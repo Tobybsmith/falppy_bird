@@ -8,6 +8,3 @@ enjoy!
 -Alternate Colour Scheme
 
 -Actual Plan (typed)
-
--Highscore for real
-
