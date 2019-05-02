@@ -27,6 +27,9 @@ boolean space = false;
 boolean isAlive = true;
 boolean safe = false;
 
+color text = (#fb8c00);
+
+
 SoundFile music;
 SoundFile flap;
 SoundFile death;
@@ -35,7 +38,6 @@ void setup()
 {
 
   size(1000, 500);
-  //This messes with 
   reader = createReader("highscore.txt");
 
   try
@@ -70,14 +72,14 @@ void setup()
   noStroke();
   
   music = new SoundFile(this, "music.wav");
-  music.amp(0.5);
+  music.amp(0.3);
   
   
   flap = new SoundFile(this, "sfxFlap.wav");
-  flap.amp(0.3);
+  flap.amp(0.);
   
   death = new SoundFile(this, "sfxDeath.wav");
-  death.amp(0.1);
+  death.amp(1);
 }
 
 void draw()
@@ -115,18 +117,6 @@ void draw()
     
     if (mousePressed)
     {
-      //If the user clicks on the box
-      /*if ((mouseX > boxX && mouseX < boxX + 200) && (mouseY > boxY && mouseY < boxY + 50))
-      {
-        music.loop();
-        mode = 1;
-      }
-      else if((mouseX > boxX && mouseX < boxX + 200) && (mouseY > 280 && mouseY < 280 + 50))
-      {
-        //Instructions
-        mode = 3;
-      }
-      */
       if(mouseX > boxX && mouseX < boxX + 200)
       {
         //1st Box (Play Button)
@@ -142,7 +132,7 @@ void draw()
         //3rd Box (Credits)
         if(mouseY > 360 && mouseY < 360 + 50)
         {
-          mode = 4;
+          //mode = 4;
         }
       }
     }
@@ -195,19 +185,9 @@ void draw()
     if (frameCount%100 == 0)
     {
       pipeList.add(new Pipe());
-      
     }
-    
+    text(round(frameRate), 50, 50);
     b.show();
-    
-    /*
-    Some properties of the bird to score points we should take advantage of:
-    - If the bird does not collide with a pipe (in the space) then the player has
-    passed that pipe and should be awarded one point
-    - If the player's X coordinate is inside the pipe space and they are alive, award one point
-    - If the player hits a new rectangle in the pipe (would be made) award a point and remove collision
-    (to avoid hundreds of points per pipe with the increment function)
-    */
     
     for(int i = pipeList.size() - 1; i >= 0; i--)
     {
@@ -271,8 +251,6 @@ void draw()
         mode = 1;
       }
     }
-    //Store score if larger then current global highscore!
-    //Maybe insult the player or something
 
 
     output = createWriter("highscore.txt");
@@ -286,6 +264,24 @@ void draw()
     output.flush();
     output.close();
     score = 0;
+  }
+  else if (mode == 3)
+  {
+    background(#4fc3f7);
+    fill(#ffc107);
+    rect(width/2 - 200, height/2 - 200, 400, 400);
+    textSize(50);
+    fill(text);
+    text("How to Play", width/2 - 145, height/2 - 130);
+    textSize(30);
+    text("Press space to jump!", width/2 - 180, height/2 - 60);
+    text("Avoid the pipes!", width/2 - 180, height/2 - 20);
+    text("DIE!", width/2 - 180, height/2 + 20);
+    text("If your name happens to \nbe Mr. Jamieson, please\ngive this project 100%", width/2 - 180, height/2 + 60);
+    
+    line(width/2 + 160, height/2 - 200, width/2 + 200, height/2 - 160);
+    fill(#ffc107);
+    rect(width/2 + 160, height/2 - 200, 40, 40);
   }
 }
 
