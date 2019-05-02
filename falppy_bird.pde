@@ -5,6 +5,8 @@ PrintWriter output;
 String highscore;
 
 PImage sprite;
+PImage background1;
+PImage background2;
 
 Bird b = new Bird();
 
@@ -17,6 +19,8 @@ int mode = 0;
 int cooldown = 0;
 int pipeSpeed = 3;
 int pipeSpace = 100;
+int bkgX = 0;
+int bkg2X = 1000;
 
 boolean hasJumped = false;
 boolean space = false;
@@ -55,6 +59,8 @@ void setup()
   }
   
   sprite = loadImage("rossJamieson.jpg");
+  background1 = loadImage("bkg.png");
+  background2 = loadImage("bkg.png");
 
   b.y = 100;
   b.radius = 40;
@@ -144,7 +150,20 @@ void draw()
   {
     background(#4fc3f7);
     fill(0);
-
+    background1.resize(width, height);
+    background2.resize(width + 5, height);
+    bkg2X = bkg2X - 2;
+    bkgX = bkgX - 2;
+    image(background1, bkgX, 0);
+    image(background2, bkg2X, 0);
+    if(bkgX + width < 0)
+    {
+      bkgX = width;
+    }
+    if(bkg2X + width < 0)
+    {
+      bkg2X = width;
+    }
     b.y = b.y + b.yAcc;
     if (b.y > height - b.radius/2)
     {
@@ -247,6 +266,8 @@ void draw()
         b.yAcc = 0;
         pipeList.clear();
         restart(music);
+        bkgX = 0;
+        bkg2X = width;
         mode = 1;
       }
     }
