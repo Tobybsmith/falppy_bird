@@ -60,7 +60,7 @@ void setup()
     e.printStackTrace();
   }
   
-  sprite = loadImage("rossJamieson.jpg");
+  sprite = loadImage("rossJamieson.png");
   background1 = loadImage("bkg.png");
   background2 = loadImage("bkg.png");
 
