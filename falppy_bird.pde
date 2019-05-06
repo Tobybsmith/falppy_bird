@@ -70,7 +70,6 @@ void setup()
   b.radius = 40;
   b.yAcc = 1;
   b.jumpSpeed = 7;
-  b.c = #ffc107;
  // noStroke();
   
   music = new SoundFile(this, "music.wav");
@@ -134,7 +133,7 @@ void draw()
         //3rd Box (Credits)
         if(mouseY > 360 && mouseY < 360 + 50)
         {
-          //mode = 4;
+          mode = 4;
         }
       }
     }
@@ -235,10 +234,10 @@ void draw()
     fill(text);
     text("You Died! Score: " + justScored + " Highscore: " + highscore, width/2 - 205, 250);
     fill(box);
-    rect(width/2 - 110, 310, 180, 55);
+    rect(width/2 - 220, 310, 180, 55);
     textSize(30);
     fill(text);
-    text("Play Again?", width/2 - 100, 350);
+    text("Play Again?", width/2 - 210, 350);
     if (mousePressed)
     {
       if ((mouseX > width/2 - 110 && mouseX < width/2 - 110 + 180) && (mouseY > 310 && mouseY < 310 + 55))
@@ -252,7 +251,15 @@ void draw()
         bkg2X = width;
         mode = 1;
       }
+      if((mouseX > width/2 + 50 && mouseX < width/2 + 50 + 255) && (mouseY > 310 && mouseY < 310 + 55))
+      {
+        mode = 0;
+      }
     }
+    fill(box);
+    rect(width/2 + 50, 310, 255, 55);
+    fill(text);
+    text("Back to menu?", width/2 + 80, 350);
 
 
     output = createWriter("highscore.txt");
@@ -295,6 +302,10 @@ void draw()
         }
       }
     }
+  }
+  else if(mode == 4)
+  {
+    mode = 0;
   }
 }
 
