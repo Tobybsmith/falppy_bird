@@ -27,7 +27,9 @@ boolean space = false;
 boolean isAlive = true;
 boolean safe = false;
 
-color text = (#fb8c00);
+color text = #fb8c00;
+color background = #4fc3f7;
+color box = #ffc107;
 
 
 SoundFile music;
@@ -69,7 +71,7 @@ void setup()
   b.yAcc = 1;
   b.jumpSpeed = 7;
   b.c = #ffc107;
-  noStroke();
+ // noStroke();
   
   music = new SoundFile(this, "music.wav");
   music.amp(0.3);
@@ -84,35 +86,35 @@ void setup()
 
 void draw()
 {
-  
+  strokeWeight(0);
   if (mode == 0)
   {
     int boxX = width/2 - 100;
     int boxY = 200;
     //Menu Time Boys!
     textSize(30);
-    background(#4fc3f7);
+    background(background);
     //This is the menu box for the title
-    fill(#ffc107);
+    fill(box);
     rect(width/2 - 200, 100, 400, 75);
-    fill(#fb8c00);
+    fill(text);
     text("Welcome to Falppy Bird!", width/2 - 180, 150);
     //This is the box for the play button
-    fill(#ffc107);
+    fill(box);
     rect(boxX, boxY, 200, 50);
-    fill(#fb8c00);
+    fill(text);
     text("Click to play!", boxX + 7, boxY + 35);
     //This is the "how to play" button
     fill(#1b5e20);
     rect(0, height - 20, width, 30);
-    fill(#ffc107);
+    fill(box);
     rect(boxX, 280, 200, 50);
-    fill(#fb8c00);
+    fill(text);
     text("Instuctions", boxX + 21, 280 + 35);
     //This is for the credits button
-    fill(#ffc107);
+    fill(box);
     rect(boxX, 360, 200, 50);
-    fill(#fb8c00);
+    fill(text);
     text("Credits", boxX + 48, 360 + 35);
     
     if (mousePressed)
@@ -138,7 +140,6 @@ void draw()
     }
   } else if (mode == 1)
   {
-    background(#4fc3f7);
     fill(0);
     background1.resize(width, height);
     background2.resize(width + 5, height);
@@ -227,15 +228,16 @@ void draw()
   {
     
     //Death Menu!
-    fill(#ffc107);
+    background(background);
+    fill(box);
     rect(width/2 - 220, 200, 525, 75);
     textSize(30);
-    fill(#fb8c00);
+    fill(text);
     text("You Died! Score: " + justScored + " Highscore: " + highscore, width/2 - 205, 250);
-    fill(#ffc107);
+    fill(box);
     rect(width/2 - 110, 310, 180, 55);
     textSize(30);
-    fill(#fb8c00);
+    fill(text);
     text("Play Again?", width/2 - 100, 350);
     if (mousePressed)
     {
@@ -267,8 +269,8 @@ void draw()
   }
   else if (mode == 3)
   {
-    background(#4fc3f7);
-    fill(#ffc107);
+    background(background);
+    fill(box);
     rect(width/2 - 200, height/2 - 200, 400, 400);
     textSize(50);
     fill(text);
@@ -279,9 +281,20 @@ void draw()
     text("DIE!", width/2 - 180, height/2 + 20);
     text("If your name happens to \nbe Mr. Jamieson, please\ngive this project 100%", width/2 - 180, height/2 + 60);
     
-    line(width/2 + 160, height/2 - 200, width/2 + 200, height/2 - 160);
-    fill(#ffc107);
-    rect(width/2 + 160, height/2 - 200, 40, 40);
+    stroke(text);
+    strokeWeight(4);
+    line(width/2 + 170, height/2 - 197, width/2 + 197, height/2 - 170);
+    line(width/2 + 170, height/2 - 170, width/2 + 197, height/2 - 197);
+    if(mousePressed)
+    {
+      if(mouseX < width/2 + 197 && mouseX > width/2 + 170)
+      {
+        if(mouseY > height/2 - 197 && mouseY < width/2 - 170)
+        {
+          mode = 0;
+        }
+      }
+    }
   }
 }
 
