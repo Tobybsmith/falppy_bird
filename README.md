@@ -3,11 +3,4 @@ enjoy!
 
 //TODO
 
--Functional Scoring that works
-
--Alternate Colour Scheme
-
--Actual Plan (typed)
-
--Highscore for real
-
+-Beat Dexter's score
