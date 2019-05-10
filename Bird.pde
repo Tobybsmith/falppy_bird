@@ -5,7 +5,6 @@ class Bird
   float radius;
   float yAcc;
   float jumpSpeed;
-  color c;
 
   void show()
   {

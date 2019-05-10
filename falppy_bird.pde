@@ -5,6 +5,9 @@ PrintWriter output;
 String highscore;
 
 PImage sprite;
+PImage spriteAlt1;
+PImage spriteAlt2;
+PImage spriteAlt3;
 PImage background1;
 PImage background2;
 
@@ -26,10 +29,15 @@ boolean hasJumped = false;
 boolean space = false;
 boolean isAlive = true;
 boolean safe = false;
+boolean PROMODE = false;
+boolean justClicked = false;
 
 color text = #fb8c00;
 color background = #4fc3f7;
 color box = #ffc107;
+color PRO = #FFC107;
+color TAINT = #fb8c00;
+
 
 
 SoundFile music;
@@ -61,8 +69,11 @@ void setup()
   catch (IOException e) {
     e.printStackTrace();
   }
-  
+
   sprite = loadImage("rossJamieson.png");
+  spriteAlt1 = loadImage("twitter.png");
+  spriteAlt2 = loadImage("bird.png");
+  spriteAlt3 = loadImage("obama.png");
   background1 = loadImage("bkg.png");
   background2 = loadImage("bkg.png");
 
@@ -70,16 +81,14 @@ void setup()
   b.radius = 40;
   b.yAcc = 1;
   b.jumpSpeed = 7;
-  b.c = #ffc107;
- // noStroke();
-  
+  // noStroke();
+
   music = new SoundFile(this, "music.wav");
   music.amp(0.3);
-  
-  
+
   flap = new SoundFile(this, "sfxFlap.wav");
   flap.amp(0.);
-  
+
   death = new SoundFile(this, "sfxDeath.wav");
   death.amp(1);
 }
@@ -90,7 +99,7 @@ void draw()
   if (mode == 0)
   {
     int boxX = width/2 - 100;
-    int boxY = 200;
+    int boxY = 190;
     //Menu Time Boys!
     textSize(30);
     background(background);
@@ -104,37 +113,47 @@ void draw()
     rect(boxX, boxY, 200, 50);
     fill(text);
     text("Click to play!", boxX + 7, boxY + 35);
-    //This is the "how to play" button
+    //This is the green grass bkg
     fill(#1b5e20);
     rect(0, height - 20, width, 30);
     fill(box);
-    rect(boxX, 280, 200, 50);
+    //For instructions
+    rect(boxX, 260, 200, 50);
     fill(text);
-    text("Instuctions", boxX + 21, 280 + 35);
+    text("Instuctions", boxX + 21, 260 + 35);
     //This is for the credits button
     fill(box);
-    rect(boxX, 360, 200, 50);
+    rect(boxX, 330, 200, 50);
     fill(text);
-    text("Credits", boxX + 48, 360 + 35);
-    
+    text("Credits", boxX + 48, 330 + 35);
+    //This is for the customization box
+    fill(box);
+    rect(boxX, 400, 200, 50);
+    fill(text);
+    text("Customize", boxX + 27, 400 + 35);
+
     if (mousePressed)
     {
-      if(mouseX > boxX && mouseX < boxX + 200)
+      if (mouseX > boxX && mouseX < boxX + 200)
       {
         //1st Box (Play Button)
-        if(mouseY > boxY && mouseY < boxY + 50)
+        if (mouseY > boxY && mouseY < boxY + 50)
         {
           mode = 1;
         }
         //2nd Box (Instructions)
-        if(mouseY > 280 && mouseY < 280 + 50)
+        if (mouseY > 260 && mouseY < 260 + 50)
         {
           mode = 3;
         }
         //3rd Box (Credits)
-        if(mouseY > 360 && mouseY < 360 + 50)
+        if (mouseY > 330 && mouseY < 330 + 50)
         {
           //mode = 4;
+        }
+        if (mouseY > 400 && mouseY < 400 + 50)
+        {
+          mode = 5;
         }
       }
     }
@@ -147,11 +166,11 @@ void draw()
     bkgX = bkgX - 2;
     image(background1, bkgX, 0);
     image(background2, bkg2X, 0);
-    if(bkgX + width < 0)
+    if (bkgX + width < 0)
     {
       bkgX = width;
     }
-    if(bkg2X + width < 0)
+    if (bkg2X + width < 0)
     {
       bkg2X = width;
     }
@@ -187,10 +206,10 @@ void draw()
     {
       pipeList.add(new Pipe());
     }
-    text(round(frameRate), 50, 50);
+    text(score, 50, 50);
     b.show();
-    
-    for(int i = pipeList.size() - 1; i >= 0; i--)
+
+    for (int i = pipeList.size() - 1; i >= 0; i--)
     {
       Pipe p = pipeList.get(i);
       p.update();
@@ -199,17 +218,16 @@ void draw()
         score += p.score;
         p.passed = true;
       }
-      if(p.x + p.xLen < 0)
+      if (p.x + p.xLen < 0)
       {
-        pipeList.remove(p); 
+        pipeList.remove(p);
       }
-      if(p.hits(b))
+      if (p.hits(b))
       {
         isAlive = false;
         death.play();
         p.show();
-      }
-      else
+      } else
       {
         p.show();
       }
@@ -226,7 +244,7 @@ void draw()
     }
   } else if (mode == 2)
   {
-    
+
     //Death Menu!
     background(background);
     fill(box);
@@ -235,22 +253,26 @@ void draw()
     fill(text);
     text("You Died! Score: " + justScored + " Highscore: " + highscore, width/2 - 205, 250);
     fill(box);
-    rect(width/2 - 110, 310, 180, 55);
+    rect(width/2 - 220, 310, 180, 55);
     textSize(30);
     fill(text);
-    text("Play Again?", width/2 - 100, 350);
+    text("Play Again?", width/2 - 210, 350);
+    fill(box);
+    rect(width/2 + 125, 310, 180, 55);
+    fill(text);
+    text("Main Menu", width/2 + 135, 350);
+
     if (mousePressed)
     {
-      if ((mouseX > width/2 - 110 && mouseX < width/2 - 110 + 180) && (mouseY > 310 && mouseY < 310 + 55))
+      if ((mouseX > width/2 - 220 && mouseX < width/2 - 220 + 180) && (mouseY > 310 && mouseY < 310 + 55))
       {
-        b.y = 100;
-        isAlive = true;
-        b.yAcc = 0;
-        pipeList.clear();
-        restart(music);
-        bkgX = 0;
-        bkg2X = width;
+        reset();
         mode = 1;
+      }
+      if ((mouseX > width/2 + 125 && mouseX < width/2 + 125 + 180) && (mouseY > 310 && mouseY < 310 + 55))
+      {
+        reset();
+        mode = 0;
       }
     }
 
@@ -266,8 +288,7 @@ void draw()
     output.flush();
     output.close();
     score = 0;
-  }
-  else if (mode == 3)
+  } else if (mode == 3)
   {
     background(background);
     fill(box);
@@ -280,20 +301,89 @@ void draw()
     text("Avoid the pipes!", width/2 - 180, height/2 - 20);
     text("DIE!", width/2 - 180, height/2 + 20);
     text("If your name happens to \nbe Mr. Jamieson, please\ngive this project 100%", width/2 - 180, height/2 + 60);
-    
+
     stroke(text);
     strokeWeight(4);
     line(width/2 + 170, height/2 - 197, width/2 + 197, height/2 - 170);
     line(width/2 + 170, height/2 - 170, width/2 + 197, height/2 - 197);
-    if(mousePressed)
+    if (mousePressed)
     {
-      if(mouseX < width/2 + 197 && mouseX > width/2 + 170)
+      if (mouseX < width/2 + 197 && mouseX > width/2 + 170)
       {
-        if(mouseY > height/2 - 197 && mouseY < width/2 - 170)
+        if (mouseY > height/2 - 197 && mouseY < width/2 - 170)
         {
           mode = 0;
         }
       }
+    }
+  } else if (mode == 4)
+  {
+    mode = 1;
+  } else if (mode == 5)
+  {
+    background(background);
+    fill(box);
+    int boxxY = height/2-100;
+    sprite.resize(100, 100);
+    spriteAlt1.resize(100, 100);
+    spriteAlt2.resize(100, 100);
+    spriteAlt3.resize(100, 100);
+    image(sprite, width/2 - 400, boxxY);
+    image(spriteAlt1, width/2 - 200, boxxY);
+    image(spriteAlt2, width/2, boxxY);
+    image(spriteAlt3, width/2 + 200, boxxY);
+    fill(PRO);
+    rect(width/2 - 415, boxxY + 125, 170, 50);
+    fill(TAINT);
+    text("PRO MODE", width/2 - 410, boxxY + 165);
+    if(mousePressed)
+    {
+      if(mouseY > boxxY && mouseY < boxxY + 100)
+      {
+        if(mouseX > width/2 - 400 && mouseX < width/2 - 400 + 150)
+        {
+          sprite = loadImage("rossJamieson.png");
+          mode = 0;
+        }
+        if(mouseX > width/2 - 200 && mouseX < width/2 - 200 + 100)
+        {
+          sprite = loadImage("twitter.png");
+          mode = 0;
+        }
+        if(mouseX > width/2 && mouseX < width/2 + 100)
+        {
+          sprite = loadImage("bird.png");
+          mode = 0;
+        }
+        if(mouseX > width/2 + 200 && mouseX < width/2 + 200 + 100)
+        {
+          sprite = loadImage("obama.png");
+          mode = 0;
+        }
+        
+      }
+      if(mouseY > boxxY + 125 && mouseY < boxxY + 125 + 50)
+      {
+        if(mouseX > width/2 - 415 && mouseX < width/2 - 415 + 170 && !justClicked)
+        {
+          justClicked = true;
+          PROMODE = !PROMODE;
+          if(PROMODE)
+          {
+            PRO = text;
+            TAINT = box;
+          }
+          else
+          {
+            PRO = box;
+            TAINT = text;
+          }
+        }
+      }
+    }
+    else
+    {
+      justClicked = false;
     }
   }
 }
@@ -312,4 +402,15 @@ void restart(SoundFile file)
   file.stop();
   delay(100);
   file.play();
+}
+
+void reset()
+{
+  b.y = 100;
+  isAlive = true;
+  b.yAcc = 0;
+  pipeList.clear();
+  restart(music);
+  bkgX = 0;
+  bkg2X = width;
 }

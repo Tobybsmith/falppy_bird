@@ -9,8 +9,13 @@ class Pipe
   color c = #1b5e20;
   int score = 0;
   boolean passed = false;
+
   void show()
   {
+    if (PROMODE)
+    {
+      this.c = #FF0000;
+    }
     fill(c);
     rect(this.x, this.y, this.xLen, this.yLen);
     rect(this.x, this.yBottom, this.xLen, this.yLenBottom);
@@ -30,9 +35,7 @@ class Pipe
       if (b.x + b.radius/2 > this.x && b.x - b.radius/2 < this.x + this.xLen)
       {
         return true;
-        
       }
-      
     }
     return false;
   }
