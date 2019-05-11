@@ -5,6 +5,7 @@ PrintWriter output;
 String highscore;
 
 PImage sprite;
+PImage spriteAlt0;
 PImage spriteAlt1;
 PImage spriteAlt2;
 PImage spriteAlt3;
@@ -36,7 +37,7 @@ color text = #fb8c00;
 color background = #4fc3f7;
 color box = #ffc107;
 color PRO = #FFC107;
-color TAINT = #fb8c00;
+color PROTEXT = #fb8c00;
 
 
 
@@ -71,6 +72,7 @@ void setup()
   }
 
   sprite = loadImage("rossJamieson.png");
+  spriteAlt0 = loadImage("rossJamieson.png");
   spriteAlt1 = loadImage("twitter.png");
   spriteAlt2 = loadImage("bird.png");
   spriteAlt3 = loadImage("obama.png");
@@ -159,7 +161,6 @@ void draw()
     }
   } else if (mode == 1)
   {
-    fill(0);
     background1.resize(width, height);
     background2.resize(width + 5, height);
     bkg2X = bkg2X - 2;
@@ -206,9 +207,9 @@ void draw()
     {
       pipeList.add(new Pipe());
     }
-    text(score, 50, 50);
+    
     b.show();
-
+    
     for (int i = pipeList.size() - 1; i >= 0; i--)
     {
       Pipe p = pipeList.get(i);
@@ -232,7 +233,10 @@ void draw()
         p.show();
       }
     }
-
+    
+    fill(0);
+    text(score, 50, 50);
+    
     if (!isAlive)
     {
       mode = 2;
@@ -324,18 +328,24 @@ void draw()
     background(background);
     fill(box);
     int boxxY = height/2-100;
-    sprite.resize(100, 100);
+    sprite.resize(100,100);
+    spriteAlt0.resize(100, 100);
     spriteAlt1.resize(100, 100);
     spriteAlt2.resize(100, 100);
     spriteAlt3.resize(100, 100);
-    image(sprite, width/2 - 400, boxxY);
+    image(spriteAlt0, width/2 - 400, boxxY);
     image(spriteAlt1, width/2 - 200, boxxY);
     image(spriteAlt2, width/2, boxxY);
     image(spriteAlt3, width/2 + 200, boxxY);
+    image(sprite, width/2 - 100, boxxY + 225);
     fill(PRO);
-    rect(width/2 - 415, boxxY + 125, 170, 50);
-    fill(TAINT);
+    rect(width/2 - 415, boxxY + 130, 170, 45);
+    fill(PROTEXT);
     text("PRO MODE", width/2 - 410, boxxY + 165);
+    fill(box);
+    rect(width/2 - 120, boxxY + 175, 135, 40);
+    fill(text);
+    text("You are:", width/2 - 115, boxxY + 205);
     if(mousePressed)
     {
       if(mouseY > boxxY && mouseY < boxxY + 100)
@@ -371,12 +381,12 @@ void draw()
           if(PROMODE)
           {
             PRO = text;
-            TAINT = box;
+            PROTEXT = box;
           }
           else
           {
             PRO = box;
-            TAINT = text;
+            PROTEXT = text;
           }
         }
       }
