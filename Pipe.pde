@@ -39,4 +39,8 @@ class Pipe
     }
     return false;
   }
+  void colorTo(color col)
+  {
+    c = col;
+  }
 }
