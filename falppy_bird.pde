@@ -11,6 +11,10 @@ PImage spriteAlt2;
 PImage spriteAlt3;
 PImage background1;
 PImage background2;
+PImage sky1;
+PImage sky2;
+PImage sky3;
+PImage sky4;
 
 Bird b = new Bird();
 
@@ -25,6 +29,10 @@ int pipeSpeed = 3;
 int pipeSpace = 100;
 int bkgX = 0;
 int bkg2X = 1000;
+int skyX = 0;
+int sky2X = 1000;
+int sky3X = 0;
+int sky4X = 1000;
 
 boolean hasJumped = false;
 boolean space = false;
@@ -32,12 +40,14 @@ boolean isAlive = true;
 boolean safe = false;
 boolean PROMODE = false;
 boolean justClicked = false;
+boolean colorPalette = true;
 
 color text = #fb8c00;
 color background = #4fc3f7;
 color box = #ffc107;
-color PRO = #FFC107;
+color PRO = #ffc107;
 color PROTEXT = #fb8c00;
+color ground = #1b5e20;
 
 
 
@@ -78,6 +88,10 @@ void setup()
   spriteAlt3 = loadImage("obama.png");
   background1 = loadImage("bkg.png");
   background2 = loadImage("bkg.png");
+  sky1 = loadImage("clouds.png");
+  sky2 = loadImage("clouds.png");
+  sky3 = loadImage("ships2.png");
+  sky4 = loadImage("ships2.png");
 
   b.y = 100;
   b.radius = 40;
@@ -116,7 +130,7 @@ void draw()
     fill(text);
     text("Click to play!", boxX + 7, boxY + 35);
     //This is the green grass bkg
-    fill(#1b5e20);
+    fill(ground);
     rect(0, height - 20, width, 30);
     fill(box);
     //For instructions
@@ -163,10 +177,32 @@ void draw()
   {
     background1.resize(width, height);
     background2.resize(width + 5, height);
+    sky1.resize(width, 0);
+    sky2.resize(width, 0);
     bkg2X = bkg2X - 2;
     bkgX = bkgX - 2;
+    if (colorPalette)
+    {
+      skyX = skyX - 1;
+      sky2X = sky2X - 1;
+    }
+    else
+    {
+      skyX = skyX - 10;
+      sky2X = sky2X - 10;
+      sky3X = sky3X + 10;
+      sky4X = sky4X + 10;
+    }
     image(background1, bkgX, 0);
     image(background2, bkg2X, 0);
+    image(sky1, skyX, 0);
+    image(sky2, sky2X, 0);
+    if (!colorPalette)
+    {
+      image(sky3, sky3X, 0);
+      image(sky4, sky4X, 0);
+    }
+    
     if (bkgX + width < 0)
     {
       bkgX = width;
@@ -174,6 +210,22 @@ void draw()
     if (bkg2X + width < 0)
     {
       bkg2X = width;
+    }
+    if (skyX + width < 0)
+    {
+      skyX = width;
+    }
+    if (sky2X + width < 0)
+    {
+      sky2X = width;
+    }
+    if (sky3X > width)
+    {
+      sky3X = -width;
+    }
+    if (sky4X > width)
+    {
+      sky4X = -width;
     }
     b.y = b.y + b.yAcc;
     if (b.y > height - b.radius/2)
@@ -213,6 +265,7 @@ void draw()
     for (int i = pipeList.size() - 1; i >= 0; i--)
     {
       Pipe p = pipeList.get(i);
+      p.colorTo(ground);
       p.update();
       if (p.score == 1 && !p.passed)
       {
@@ -343,9 +396,11 @@ void draw()
     fill(PROTEXT);
     text("PRO MODE", width/2 - 410, boxxY + 165);
     fill(box);
-    rect(width/2 - 120, boxxY + 175, 135, 40);
+    rect(width/2 - 120, boxxY + 175, 135, 45);
+    rect(width/2 + 200, boxxY + 130, 210, 45);
     fill(text);
     text("You are:", width/2 - 115, boxxY + 205);
+    text("Palette Switch", width/2 + 205, boxxY + 165);
     if(mousePressed)
     {
       if(mouseY > boxxY && mouseY < boxxY + 100)
@@ -387,6 +442,56 @@ void draw()
           {
             PRO = box;
             PROTEXT = text;
+          }
+        }
+      }
+      if(mouseY > boxxY + 130 && mouseY < boxxY + 175)
+      {
+        if(mouseX > width/2 + 200 && mouseX < width/2 + 410 && !justClicked)
+        {
+          justClicked = true;
+          colorPalette = !colorPalette;
+          if (colorPalette)
+          {
+            background1 = loadImage("bkg.png");
+            background2 = loadImage("bkg.png");
+            sky1 = loadImage("clouds.png");
+            sky2 = loadImage("clouds.png");
+            if (PRO == box)
+            {
+              PRO = #ffc107;
+              PROTEXT = #fb8c00;
+            }
+            else
+            {
+              PRO = #fb8c00;
+              PROTEXT = #ffc107;
+            }
+            text = #fb8c00;
+            background = #4fc3f7;
+            box = #ffc107;
+            ground = #1b5e20;
+          }
+          else
+          {
+            background1 = loadImage("bkg2.png");
+            background2 = loadImage("bkg2.png");
+            sky1 = loadImage("ships1.png");
+            sky2 = loadImage("ships1.png");
+            if (PRO == box)
+            {
+              PRO = #3a21c9;
+              PROTEXT = #8d0104;
+            }
+            else
+            {
+              PRO = #8d0104;
+              PROTEXT = #3a21c9;
+            }
+            text = #8d0104;
+            background = #28009f;
+            box = #3a21c9;
+            ground = #ff0000;
           }
         }
       }
