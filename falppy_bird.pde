@@ -21,6 +21,7 @@ Bird b = new Bird();
 ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
 
 float gravity = 0.35;
+
 int score = 0;
 int justScored;
 int mode = 0;
@@ -46,7 +47,7 @@ color text = #fb8c00;
 color background = #4fc3f7;
 color box = #ffc107;
 color PRO = #ffc107;
-color PROTEXT = #fb8c00;
+color TAINT = #fb8c00;
 color ground = #1b5e20;
 
 
@@ -100,13 +101,13 @@ void setup()
   // noStroke();
 
   music = new SoundFile(this, "music.wav");
-  music.amp(0.3);
+  music.amp(0);
 
   flap = new SoundFile(this, "sfxFlap.wav");
-  flap.amp(0.);
+  flap.amp(0);
 
   death = new SoundFile(this, "sfxDeath.wav");
-  death.amp(1);
+  death.amp(0);
 }
 
 void draw()
@@ -165,7 +166,7 @@ void draw()
         //3rd Box (Credits)
         if (mouseY > 330 && mouseY < 330 + 50)
         {
-          //mode = 4;
+          mode = 4;
         }
         if (mouseY > 400 && mouseY < 400 + 50)
         {
@@ -185,8 +186,7 @@ void draw()
     {
       skyX = skyX - 1;
       sky2X = sky2X - 1;
-    }
-    else
+    } else
     {
       skyX = skyX - 10;
       sky2X = sky2X - 10;
@@ -202,7 +202,7 @@ void draw()
       image(sky3, sky3X, 0);
       image(sky4, sky4X, 0);
     }
-    
+
     if (bkgX + width < 0)
     {
       bkgX = width;
@@ -259,9 +259,9 @@ void draw()
     {
       pipeList.add(new Pipe());
     }
-    
+
     b.show();
-    
+
     for (int i = pipeList.size() - 1; i >= 0; i--)
     {
       Pipe p = pipeList.get(i);
@@ -286,10 +286,10 @@ void draw()
         p.show();
       }
     }
-    
-    fill(0);
+
+    fill(text);
     text(score, 50, 50);
-    
+
     if (!isAlive)
     {
       mode = 2;
@@ -356,7 +356,7 @@ void draw()
     textSize(30);
     text("Press space to jump!", width/2 - 180, height/2 - 60);
     text("Avoid the pipes!", width/2 - 180, height/2 - 20);
-    text("DIE!", width/2 - 180, height/2 + 20);
+    text("Don't Die!", width/2 - 180, height/2 + 20);
     text("If your name happens to \nbe Mr. Jamieson, please\ngive this project 100%", width/2 - 180, height/2 + 60);
 
     stroke(text);
@@ -375,13 +375,13 @@ void draw()
     }
   } else if (mode == 4)
   {
-    mode = 1;
+    mode = 0;
   } else if (mode == 5)
   {
     background(background);
     fill(box);
     int boxxY = height/2-100;
-    sprite.resize(100,100);
+    sprite.resize(100, 100);
     spriteAlt0.resize(100, 100);
     spriteAlt1.resize(100, 100);
     spriteAlt2.resize(100, 100);
@@ -393,7 +393,7 @@ void draw()
     image(sprite, width/2 - 100, boxxY + 225);
     fill(PRO);
     rect(width/2 - 415, boxxY + 130, 170, 45);
-    fill(PROTEXT);
+    fill(TAINT);
     text("PRO MODE", width/2 - 410, boxxY + 165);
     fill(box);
     rect(width/2 - 120, boxxY + 175, 135, 45);
@@ -401,53 +401,63 @@ void draw()
     fill(text);
     text("You are:", width/2 - 115, boxxY + 205);
     text("Palette Switch", width/2 + 205, boxxY + 165);
-    if(mousePressed)
+    fill(box);
+    rect(width/2 - 140, 50, 205, 45);
+    fill(text);
+    text("Back to Menu", width/2 - 135, 85);
+    if (mousePressed)
     {
-      if(mouseY > boxxY && mouseY < boxxY + 100)
+      if(mouseY > 50 && mouseY < 50 + 45)
       {
-        if(mouseX > width/2 - 400 && mouseX < width/2 - 400 + 150)
+        if(mouseX > width/2 - 140 && mouseX < width/2 - 140 + 205)
+        {
+          mode = 0;
+        }
+      }
+      if (mouseY > boxxY && mouseY < boxxY + 100)
+      {
+        if (mouseX > width/2 - 400 && mouseX < width/2 - 400 + 150)
         {
           sprite = loadImage("rossJamieson.png");
-          mode = 0;
+          //mode = 0;
         }
-        if(mouseX > width/2 - 200 && mouseX < width/2 - 200 + 100)
+        if (mouseX > width/2 - 200 && mouseX < width/2 - 200 + 100)
         {
           sprite = loadImage("twitter.png");
-          mode = 0;
+          //mode = 0;
         }
-        if(mouseX > width/2 && mouseX < width/2 + 100)
+        if (mouseX > width/2 && mouseX < width/2 + 100)
         {
           sprite = loadImage("bird.png");
-          mode = 0;
+          //This is the weed number!
+          //mode = 0;
         }
-        if(mouseX > width/2 + 200 && mouseX < width/2 + 200 + 100)
+        if (mouseX > width/2 + 200 && mouseX < width/2 + 200 + 100)
         {
           sprite = loadImage("obama.png");
-          mode = 0;
+          //mode = 0;
         }
-        
       }
-      if(mouseY > boxxY + 125 && mouseY < boxxY + 125 + 50)
+      if (mouseY > boxxY + 125 && mouseY < boxxY + 125 + 50)
       {
-        if(mouseX > width/2 - 415 && mouseX < width/2 - 415 + 170 && !justClicked)
+        if (mouseX > width/2 - 415 && mouseX < width/2 - 415 + 170 && !justClicked)
         {
           justClicked = true;
           PROMODE = !PROMODE;
-          if(PROMODE)
+          if (PROMODE)
           {
             PRO = text;
-            PROTEXT = box;
-          }
-          else
+            TAINT = box;
+          } else
           {
             PRO = box;
-            PROTEXT = text;
+            TAINT = text;
           }
         }
       }
-      if(mouseY > boxxY + 130 && mouseY < boxxY + 175)
+      if (mouseY > boxxY + 130 && mouseY < boxxY + 175)
       {
-        if(mouseX > width/2 + 200 && mouseX < width/2 + 410 && !justClicked)
+        if (mouseX > width/2 + 200 && mouseX < width/2 + 410 && !justClicked)
         {
           justClicked = true;
           colorPalette = !colorPalette;
@@ -460,19 +470,17 @@ void draw()
             if (PRO == box)
             {
               PRO = #ffc107;
-              PROTEXT = #fb8c00;
-            }
-            else
+              TAINT = #fb8c00;
+            } else
             {
               PRO = #fb8c00;
-              PROTEXT = #ffc107;
+              TAINT = #ffc107;
             }
             text = #fb8c00;
             background = #4fc3f7;
             box = #ffc107;
             ground = #1b5e20;
-          }
-          else
+          } else
           {
             background1 = loadImage("bkg2.png");
             background2 = loadImage("bkg2.png");
@@ -481,12 +489,11 @@ void draw()
             if (PRO == box)
             {
               PRO = #3a21c9;
-              PROTEXT = #8d0104;
-            }
-            else
+              TAINT = #8d0104;
+            } else
             {
               PRO = #8d0104;
-              PROTEXT = #3a21c9;
+              TAINT = #3a21c9;
             }
             text = #8d0104;
             background = #28009f;
@@ -495,8 +502,7 @@ void draw()
           }
         }
       }
-    }
-    else
+    } else
     {
       justClicked = false;
     }
@@ -510,6 +516,11 @@ void keyReleased()
     space = true;
     flap.play();
   }
+}
+void mouseReleased()
+{
+  space = true;
+  flap.play();
 }
 
 void restart(SoundFile file)
