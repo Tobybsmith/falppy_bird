@@ -21,7 +21,6 @@ Bird b = new Bird();
 ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
 
 float gravity = 0.35;
-
 int score = 0;
 int justScored;
 int mode = 0;
@@ -33,21 +32,21 @@ int bkg2X = 1000;
 int skyX = 0;
 int sky2X = 1000;
 int sky3X = 0;
-int sky4X = 1000;
+int sky4X = -2*1000;
+int colorPalette = 1;
 
 boolean hasJumped = false;
 boolean space = false;
 boolean isAlive = true;
 boolean safe = false;
-boolean PROMODE = false;
+boolean ProMode = false;
 boolean justClicked = false;
-boolean colorPalette = true;
 
 color text = #fb8c00;
 color background = #4fc3f7;
 color box = #ffc107;
-color PRO = #ffc107;
-color TAINT = #fb8c00;
+color ProBox = #ffc107;
+color ProText = #fb8c00;
 color ground = #1b5e20;
 
 
@@ -101,13 +100,13 @@ void setup()
   // noStroke();
 
   music = new SoundFile(this, "music.wav");
-  music.amp(0);
+  music.amp(0.3);
 
   flap = new SoundFile(this, "sfxFlap.wav");
-  flap.amp(0);
+  flap.amp(0.);
 
   death = new SoundFile(this, "sfxDeath.wav");
-  death.amp(0);
+  death.amp(1);
 }
 
 void draw()
@@ -166,7 +165,7 @@ void draw()
         //3rd Box (Credits)
         if (mouseY > 330 && mouseY < 330 + 50)
         {
-          mode = 4;
+          //mode = 4;
         }
         if (mouseY > 400 && mouseY < 400 + 50)
         {
@@ -182,27 +181,39 @@ void draw()
     sky2.resize(width, 0);
     bkg2X = bkg2X - 2;
     bkgX = bkgX - 2;
-    if (colorPalette)
+    if (colorPalette % 3 == 1)
     {
       skyX = skyX - 1;
       sky2X = sky2X - 1;
-    } else
+    }
+    if (colorPalette % 3 == 2)
     {
-      skyX = skyX - 10;
-      sky2X = sky2X - 10;
+      skyX = skyX - 20;
+      sky2X = sky2X - 20;
       sky3X = sky3X + 10;
       sky4X = sky4X + 10;
     }
-    image(background1, bkgX, 0);
-    image(background2, bkg2X, 0);
-    image(sky1, skyX, 0);
-    image(sky2, sky2X, 0);
-    if (!colorPalette)
+    
+    if (colorPalette % 3 != 0)
+    {
+      image(background1, bkgX, 0);
+      image(background2, bkg2X, 0);
+      image(sky1, skyX, 0);
+      image(sky2, sky2X, 0);
+    }
+    
+    if (colorPalette % 3 == 2)
     {
       image(sky3, sky3X, 0);
       image(sky4, sky4X, 0);
     }
-
+    
+    if (colorPalette % 3 == 0)
+    {
+      fill(255);
+      rect(0,0,width,height);
+    }
+    
     if (bkgX + width < 0)
     {
       bkgX = width;
@@ -259,9 +270,9 @@ void draw()
     {
       pipeList.add(new Pipe());
     }
-
+    
     b.show();
-
+    
     for (int i = pipeList.size() - 1; i >= 0; i--)
     {
       Pipe p = pipeList.get(i);
@@ -286,10 +297,21 @@ void draw()
         p.show();
       }
     }
-
-    fill(text);
+    
+    if(colorPalette % 3 == 1)
+    {
+      fill(0);
+    }
+    if(colorPalette % 3 == 2)
+    {
+      fill(255);
+    }
+    if(colorPalette % 3 == 0)
+    {
+      fill(#ff0000);
+    }
     text(score, 50, 50);
-
+    
     if (!isAlive)
     {
       mode = 2;
@@ -356,7 +378,7 @@ void draw()
     textSize(30);
     text("Press space to jump!", width/2 - 180, height/2 - 60);
     text("Avoid the pipes!", width/2 - 180, height/2 - 20);
-    text("Don't Die!", width/2 - 180, height/2 + 20);
+    text("DIE!", width/2 - 180, height/2 + 20);
     text("If your name happens to \nbe Mr. Jamieson, please\ngive this project 100%", width/2 - 180, height/2 + 60);
 
     stroke(text);
@@ -391,10 +413,10 @@ void draw()
     image(spriteAlt2, width/2, boxxY);
     image(spriteAlt3, width/2 + 200, boxxY);
     image(sprite, width/2 - 100, boxxY + 225);
-    fill(PRO);
+    fill(ProBox);
     rect(width/2 - 415, boxxY + 130, 170, 45);
-    fill(TAINT);
-    text("PRO MODE", width/2 - 410, boxxY + 165);
+    fill(ProText);
+    text("bebe", width/2 - 410, boxxY + 165);
     fill(box);
     rect(width/2 - 120, boxxY + 175, 135, 45);
     rect(width/2 + 200, boxxY + 130, 210, 45);
@@ -443,15 +465,15 @@ void draw()
         if (mouseX > width/2 - 415 && mouseX < width/2 - 415 + 170 && !justClicked)
         {
           justClicked = true;
-          PROMODE = !PROMODE;
-          if (PROMODE)
+          ProMode = !ProMode;
+          if (ProMode)
           {
-            PRO = text;
-            TAINT = box;
+            ProBox = text;
+            ProText = box;
           } else
           {
-            PRO = box;
-            TAINT = text;
+            ProBox = box;
+            ProText = text;
           }
         }
       }
@@ -467,14 +489,14 @@ void draw()
             background2 = loadImage("bkg.png");
             sky1 = loadImage("clouds.png");
             sky2 = loadImage("clouds.png");
-            if (PRO == box)
+            if (ProBox == box)
             {
-              PRO = #ffc107;
-              TAINT = #fb8c00;
+              ProBox = #ffc107;
+              ProText = #fb8c00;
             } else
             {
-              PRO = #fb8c00;
-              TAINT = #ffc107;
+              ProBox = #fb8c00;
+              ProText = #ffc107;
             }
             text = #fb8c00;
             background = #4fc3f7;
@@ -486,14 +508,14 @@ void draw()
             background2 = loadImage("bkg2.png");
             sky1 = loadImage("ships1.png");
             sky2 = loadImage("ships1.png");
-            if (PRO == box)
+            if (ProBox == box)
             {
-              PRO = #3a21c9;
-              TAINT = #8d0104;
+              ProBox = #3a21c9;
+              ProText = #8d0104;
             } else
             {
-              PRO = #8d0104;
-              TAINT = #3a21c9;
+              ProBox = #8d0104;
+              ProText = #3a21c9;
             }
             text = #8d0104;
             background = #28009f;
