@@ -397,9 +397,10 @@ void draw()
     }
   } else if (mode == 4)
   {
-    mode = 0;
+    mode = 1;
   } else if (mode == 5)
   {
+    
     background(background);
     fill(box);
     int boxxY = height/2-100;
@@ -416,7 +417,7 @@ void draw()
     fill(ProBox);
     rect(width/2 - 415, boxxY + 130, 170, 45);
     fill(ProText);
-    text("bebe", width/2 - 410, boxxY + 165);
+    text("Pro Mode", width/2 - 410, boxxY + 165);
     fill(box);
     rect(width/2 - 120, boxxY + 175, 135, 45);
     rect(width/2 + 200, boxxY + 130, 210, 45);
@@ -482,8 +483,8 @@ void draw()
         if (mouseX > width/2 + 200 && mouseX < width/2 + 410 && !justClicked)
         {
           justClicked = true;
-          colorPalette = !colorPalette;
-          if (colorPalette)
+          colorPalette += 1;
+          if (colorPalette % 3 == 1)
           {
             background1 = loadImage("bkg.png");
             background2 = loadImage("bkg.png");
@@ -493,7 +494,8 @@ void draw()
             {
               ProBox = #ffc107;
               ProText = #fb8c00;
-            } else
+            }
+            else
             {
               ProBox = #fb8c00;
               ProText = #ffc107;
@@ -502,7 +504,8 @@ void draw()
             background = #4fc3f7;
             box = #ffc107;
             ground = #1b5e20;
-          } else
+          }
+          if (colorPalette % 3 == 2)
           {
             background1 = loadImage("bkg2.png");
             background2 = loadImage("bkg2.png");
@@ -512,7 +515,8 @@ void draw()
             {
               ProBox = #3a21c9;
               ProText = #8d0104;
-            } else
+            }
+            else
             {
               ProBox = #8d0104;
               ProText = #3a21c9;
@@ -521,6 +525,23 @@ void draw()
             background = #28009f;
             box = #3a21c9;
             ground = #ff0000;
+          }
+          if (colorPalette % 3 == 0)
+          {
+            if (ProBox == box)
+            {
+              ProBox = #808080;
+              ProText = #ffffff;
+            }
+            else
+            {
+              ProBox = #ffffff;
+              ProText = #808080;
+            }
+            text = #ffffff;
+            background = #ffffff;
+            box = #808080;
+            ground = #000000;
           }
         }
       }
