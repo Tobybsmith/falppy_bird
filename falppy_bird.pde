@@ -46,11 +46,11 @@ boolean safe = false;
 boolean ProMode = false;
 boolean justClicked = false;
 
-color text = #fb8c00;
+color text = #FF5722;
 color background = #4fc3f7;
 color box = #ffc107;
 color ProBox = #ffc107;
-color ProText = #fb8c00;
+color ProText = #FF5722;
 color ground = #75FF33;
 color dot = #F0FFF0;
 
@@ -537,7 +537,7 @@ void draw()
               ProBox = #fb8c00;
               ProText = #ffc107;
             }
-            text = #fb8c00;
+            text = #FF5722;
             background = #4fc3f7;
             box = #ffc107;
             ground = #1b5e20;
@@ -613,7 +613,8 @@ void restart(SoundFile file)
 void reset()
 {
   b.y = 100;
-  pipenutte = 0;  
+  pipenutte = 0; 
+  var = 200;
   isAlive = true;
   b.yAcc = 0;
   pipeList.clear();
