@@ -1,3 +1,4 @@
+//If this gives an error, please go to the Sketch
 import processing.sound.*;
 
 BufferedReader reader;
@@ -21,6 +22,8 @@ Bird b = new Bird();
 ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
 
 float gravity = 0.35;
+float var = 200;
+
 int score = 0;
 int justScored;
 int mode = 0;
@@ -33,7 +36,8 @@ int skyX = 0;
 int sky2X = 1000;
 int sky3X = 0;
 int sky4X = -2*1000;
-int colorPalette = 1;
+int colourPalette = 1;
+int pipenutte = 0;
 
 boolean hasJumped = false;
 boolean space = false;
@@ -47,10 +51,10 @@ color background = #4fc3f7;
 color box = #ffc107;
 color ProBox = #ffc107;
 color ProText = #fb8c00;
-color ground = #1b5e20;
+color ground = #75FF33;
+color dot = #F0FFF0;
 
-
-
+//The sound effects for the game
 SoundFile music;
 SoundFile flap;
 SoundFile death;
@@ -103,7 +107,7 @@ void setup()
   music.amp(0.3);
 
   flap = new SoundFile(this, "sfxFlap.wav");
-  flap.amp(0.);
+  flap.amp(0.1);
 
   death = new SoundFile(this, "sfxDeath.wav");
   death.amp(1);
@@ -114,11 +118,30 @@ void draw()
   strokeWeight(0);
   if (mode == 0)
   {
+
     int boxX = width/2 - 100;
     int boxY = 190;
     //Menu Time Boys!
+
     textSize(30);
     background(background);
+    if (colourPalette % 3 != 0)
+    {
+      sky1.resize(width, 0);
+      sky2.resize(width, 0);
+      skyX--;
+      sky2X--;
+      if (skyX + width < 0)
+      {
+        skyX = width;
+      }
+      if (sky2X + width < 0)
+      {
+        sky2X = width;
+      }
+      image(sky1, skyX, 0);
+      image(sky2, sky2X, 0);
+    }
     //This is the menu box for the title
     fill(box);
     rect(width/2 - 200, 100, 400, 75);
@@ -181,39 +204,39 @@ void draw()
     sky2.resize(width, 0);
     bkg2X = bkg2X - 2;
     bkgX = bkgX - 2;
-    if (colorPalette % 3 == 1)
+    if (colourPalette % 3 == 1)
     {
       skyX = skyX - 1;
       sky2X = sky2X - 1;
     }
-    if (colorPalette % 3 == 2)
+    if (colourPalette % 3 == 2)
     {
       skyX = skyX - 20;
       sky2X = sky2X - 20;
       sky3X = sky3X + 10;
       sky4X = sky4X + 10;
     }
-    
-    if (colorPalette % 3 != 0)
+
+    if (colourPalette % 3 != 0)
     {
       image(background1, bkgX, 0);
       image(background2, bkg2X, 0);
       image(sky1, skyX, 0);
       image(sky2, sky2X, 0);
     }
-    
-    if (colorPalette % 3 == 2)
+
+    if (colourPalette % 3 == 2)
     {
       image(sky3, sky3X, 0);
       image(sky4, sky4X, 0);
     }
-    
-    if (colorPalette % 3 == 0)
+
+    if (colourPalette % 3 == 0)
     {
       fill(255);
-      rect(0,0,width,height);
+      rect(0, 0, width, height);
     }
-    
+
     if (bkgX + width < 0)
     {
       bkgX = width;
@@ -269,10 +292,17 @@ void draw()
     if (frameCount%100 == 0)
     {
       pipeList.add(new Pipe());
+      pipenutte++;
     }
-    
+
+    var -= 0.03;
+    if (var < 150)
+    {
+      var = 150;
+    }
+
     b.show();
-    
+
     for (int i = pipeList.size() - 1; i >= 0; i--)
     {
       Pipe p = pipeList.get(i);
@@ -296,22 +326,30 @@ void draw()
       {
         p.show();
       }
+
+      if (pipenutte <= 5)
+      {
+        fill(dot);
+        ellipse(p.x - 28, p.y/2 + p.yBottom/2 + 30, 15, 15);
+      }
+
+      p.yBottom = p.y + var;
     }
-    
-    if(colorPalette % 3 == 1)
+
+    if (colourPalette % 3 == 1)
     {
       fill(0);
     }
-    if(colorPalette % 3 == 2)
+    if (colourPalette % 3 == 2)
     {
       fill(255);
     }
-    if(colorPalette % 3 == 0)
+    if (colourPalette % 3 == 0)
     {
       fill(#ff0000);
     }
     text(score, 50, 50);
-    
+
     if (!isAlive)
     {
       mode = 2;
@@ -378,7 +416,7 @@ void draw()
     textSize(30);
     text("Press space to jump!", width/2 - 180, height/2 - 60);
     text("Avoid the pipes!", width/2 - 180, height/2 - 20);
-    text("DIE!", width/2 - 180, height/2 + 20);
+    text("Jump on lil nodes (yellow)", width/2 - 180, height/2 + 20);
     text("If your name happens to \nbe Mr. Jamieson, please\ngive this project 100%", width/2 - 180, height/2 + 60);
 
     stroke(text);
@@ -400,7 +438,7 @@ void draw()
     mode = 1;
   } else if (mode == 5)
   {
-    
+
     background(background);
     fill(box);
     int boxxY = height/2-100;
@@ -430,9 +468,9 @@ void draw()
     text("Back to Menu", width/2 - 135, 85);
     if (mousePressed)
     {
-      if(mouseY > 50 && mouseY < 50 + 45)
+      if (mouseY > 50 && mouseY < 50 + 45)
       {
-        if(mouseX > width/2 - 140 && mouseX < width/2 - 140 + 205)
+        if (mouseX > width/2 - 140 && mouseX < width/2 - 140 + 205)
         {
           mode = 0;
         }
@@ -483,8 +521,8 @@ void draw()
         if (mouseX > width/2 + 200 && mouseX < width/2 + 410 && !justClicked)
         {
           justClicked = true;
-          colorPalette += 1;
-          if (colorPalette % 3 == 1)
+          colourPalette += 1;
+          if (colourPalette % 3 == 1)
           {
             background1 = loadImage("bkg.png");
             background2 = loadImage("bkg.png");
@@ -494,8 +532,7 @@ void draw()
             {
               ProBox = #ffc107;
               ProText = #fb8c00;
-            }
-            else
+            } else
             {
               ProBox = #fb8c00;
               ProText = #ffc107;
@@ -505,7 +542,7 @@ void draw()
             box = #ffc107;
             ground = #1b5e20;
           }
-          if (colorPalette % 3 == 2)
+          if (colourPalette % 3 == 2)
           {
             background1 = loadImage("bkg2.png");
             background2 = loadImage("bkg2.png");
@@ -515,8 +552,7 @@ void draw()
             {
               ProBox = #3a21c9;
               ProText = #8d0104;
-            }
-            else
+            } else
             {
               ProBox = #8d0104;
               ProText = #3a21c9;
@@ -525,15 +561,15 @@ void draw()
             background = #28009f;
             box = #3a21c9;
             ground = #ff0000;
+            dot = #F0FFF0;
           }
-          if (colorPalette % 3 == 0)
+          if (colourPalette % 3 == 0)
           {
             if (ProBox == box)
             {
               ProBox = #808080;
               ProText = #ffffff;
-            }
-            else
+            } else
             {
               ProBox = #ffffff;
               ProText = #808080;
@@ -542,6 +578,7 @@ void draw()
             background = #ffffff;
             box = #808080;
             ground = #000000;
+            dot = #4fc3f7;
           }
         }
       }
@@ -576,6 +613,7 @@ void restart(SoundFile file)
 void reset()
 {
   b.y = 100;
+  pipenutte = 0;  
   isAlive = true;
   b.yAcc = 0;
   pipeList.clear();

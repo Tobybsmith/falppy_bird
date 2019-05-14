@@ -2,22 +2,24 @@ class Pipe
 {
   float x = width;
   float y = random(height/2);
-  float yBottom = this.y + 150;
+  float yBottom = this.y + 200;
   float yLenBottom = yBottom + height;
   float xLen = 20;
   float yLen = y - height;
-  color c = #1b5e20;
+  color c = #75FF33;
   int score = 0;
   boolean passed = false;
 
   void show()
   {
-    if (PROMODE)
+    if (ProMode)
     {
       this.c = #FF0000;
     }
     fill(c);
+    //Top rectangle
     rect(this.x, this.y, this.xLen, this.yLen);
+    //Bottom rectangle
     rect(this.x, this.yBottom, this.xLen, this.yLenBottom);
   }
   void update()
