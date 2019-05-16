@@ -16,6 +16,10 @@ PImage sky1;
 PImage sky2;
 PImage sky3;
 PImage sky4;
+PImage sansBkg1;
+PImage sansBkg2;
+PImage sansPlayer;
+PImage bone;
 
 Bird b = new Bird();
 
@@ -36,6 +40,8 @@ int skyX = 0;
 int sky2X = 1000;
 int sky3X = 0;
 int sky4X = -2*1000;
+int sansX = 0;
+int sans2X = 1000;
 int colourPalette = 1;
 int pipenutte = 0;
 
@@ -45,6 +51,7 @@ boolean isAlive = true;
 boolean safe = false;
 boolean ProMode = false;
 boolean justClicked = false;
+boolean SANS = true;
 
 color text = #FF5722;
 color background = #4fc3f7;
@@ -96,6 +103,11 @@ void setup()
   sky2 = loadImage("clouds.png");
   sky3 = loadImage("ships2.png");
   sky4 = loadImage("ships2.png");
+  sansBkg1 = loadImage("sansBkg.png");
+  sansBkg2 = loadImage("sansBkg.png");
+  sansPlayer = loadImage("heart.png");
+  bone = loadImage("hummus.png");
+  
 
   b.y = 100;
   b.radius = 40;
@@ -198,12 +210,31 @@ void draw()
     }
   } else if (mode == 1)
   {
-    background1.resize(width, height);
+   /* background1.resize(width, height);
     background2.resize(width + 5, height);
     sky1.resize(width, 0);
     sky2.resize(width, 0);
-    bkg2X = bkg2X - 2;
-    bkgX = bkgX - 2;
+    */
+    sansBkg1.resize(width, 0);
+    sansBkg2.resize(width, 0);
+    //bkg2X = bkg2X - 2;
+   // bkgX = bkgX - 2;
+    if(SANS)
+    {
+      image(sansBkg1, sansX, 0);
+      image(sansBkg2, sans2X, 0);
+      sansX = sansX - 2;
+      sans2X = sans2X - 2;
+      sprite = sansPlayer;
+      if(sansX < 0)
+      {
+        sansX = width;
+      }
+      if(sans2X < 0)
+      {
+        sans2X = width;
+      }
+    }
     if (colourPalette % 3 == 1)
     {
       skyX = skyX - 1;
@@ -363,30 +394,29 @@ void draw()
   {
 
     //Death Menu!
-    background(background);
     fill(box);
-    rect(width/2 - 220, 200, 525, 75);
+    rect(width/2 - 260, 180, 520, 75);
     textSize(30);
     fill(text);
-    text("You Died! Score: " + justScored + " Highscore: " + highscore, width/2 - 205, 250);
+    text("You Died! Score: " + justScored + " Highscore: " + highscore, width/2 - 245, 230);
     fill(box);
-    rect(width/2 - 220, 310, 180, 55);
+    rect(width/2 - 260, 310, 180, 55);
     textSize(30);
     fill(text);
-    text("Play Again?", width/2 - 210, 350);
+    text("Play Again?", width/2 - 250, 350);
     fill(box);
-    rect(width/2 + 125, 310, 180, 55);
+    rect(width/2 + 80, 310, 180, 55);
     fill(text);
-    text("Main Menu", width/2 + 135, 350);
+    text("Main Menu", width/2 + 90, 350);
 
-    if (mousePressed)
+    if (mousePressed || keyPressed)
     {
-      if ((mouseX > width/2 - 220 && mouseX < width/2 - 220 + 180) && (mouseY > 310 && mouseY < 310 + 55))
+      if (((mouseX > width/2 - 260 && mouseX < width/2 - 260 + 180) && (mouseY > 310 && mouseY < 310 + 55)) || (key == ' '))
       {
         reset();
         mode = 1;
       }
-      if ((mouseX > width/2 + 125 && mouseX < width/2 + 125 + 180) && (mouseY > 310 && mouseY < 310 + 55))
+      if ((mouseX > width/2 + 80 && mouseX < width/2 + 80 + 180) && (mouseY > 310 && mouseY < 310 + 55))
       {
         reset();
         mode = 0;
@@ -466,6 +496,10 @@ void draw()
     rect(width/2 - 140, 50, 205, 45);
     fill(text);
     text("Back to Menu", width/2 - 135, 85);
+    if(SANS)
+    {
+      
+    }
     if (mousePressed)
     {
       if (mouseY > 50 && mouseY < 50 + 45)
