@@ -51,15 +51,15 @@ boolean isAlive = true;
 boolean safe = false;
 boolean ProMode = false;
 boolean justClicked = false;
-boolean SANS = true;
+boolean sans = false;
 
-color text = #FF5722;
+color text = #ff5722;
 color background = #4fc3f7;
 color box = #ffc107;
 color ProBox = #ffc107;
-color ProText = #FF5722;
-color ground = #75FF33;
-color dot = #F0FFF0;
+color ProText = #ff5722;
+color ground = #75ff33;
+color dot = #f0fff0;
 
 //The sound effects for the game
 SoundFile music;
@@ -103,9 +103,6 @@ void setup()
   sky2 = loadImage("clouds.png");
   sky3 = loadImage("ships2.png");
   sky4 = loadImage("ships2.png");
-  sansBkg1 = loadImage("sansBkg.png");
-  sansBkg2 = loadImage("sansBkg.png");
-  sansPlayer = loadImage("heart.png");
   bone = loadImage("hummus.png");
   
 
@@ -182,7 +179,19 @@ void draw()
     rect(boxX, 400, 200, 50);
     fill(text);
     text("Customize", boxX + 27, 400 + 35);
-
+    
+    if (keyPressed && key == 's')
+    {
+      sans = true;
+      sprite = loadImage("heart.png");
+      background1 = loadImage("sansBkg.png");
+      background2 = loadImage("sansBkg.png");
+      sky1 = loadImage("sans.png");
+      pipeSpeed = 15;
+      pipeSpace = 0;
+      mode = 1;
+    }
+    
     if (mousePressed)
     {
       if (mouseX > boxX && mouseX < boxX + 200)
@@ -210,37 +219,28 @@ void draw()
     }
   } else if (mode == 1)
   {
-   /* background1.resize(width, height);
+    background1.resize(width, height);
     background2.resize(width + 5, height);
-    sky1.resize(width, 0);
-    sky2.resize(width, 0);
-    */
-    sansBkg1.resize(width, 0);
-    sansBkg2.resize(width, 0);
-    //bkg2X = bkg2X - 2;
-   // bkgX = bkgX - 2;
-    if(SANS)
+    sky1.resize(width, height/3);
+    sky2.resize(width, height/3);
+    
+    if (!sans)
     {
-      image(sansBkg1, sansX, 0);
-      image(sansBkg2, sans2X, 0);
-      sansX = sansX - 2;
-      sans2X = sans2X - 2;
-      sprite = sansPlayer;
-      if(sansX < 0)
-      {
-        sansX = width;
-      }
-      if(sans2X < 0)
-      {
-        sans2X = width;
-      }
+      bkg2X = bkg2X - 2;
+      bkgX = bkgX - 2;
     }
-    if (colourPalette % 3 == 1)
+    if (sans)
+    {
+      skyX = skyX - 25;
+      sky2X = sky2X - 25;
+    }
+    
+    if (colourPalette % 3 == 1 && !sans)
     {
       skyX = skyX - 1;
       sky2X = sky2X - 1;
     }
-    if (colourPalette % 3 == 2)
+    if (colourPalette % 3 == 2 && !sans)
     {
       skyX = skyX - 20;
       sky2X = sky2X - 20;
@@ -253,7 +253,10 @@ void draw()
       image(background1, bkgX, 0);
       image(background2, bkg2X, 0);
       image(sky1, skyX, 0);
-      image(sky2, sky2X, 0);
+      if (!sans)
+      {
+        image(sky2, sky2X, 0);
+      }
     }
 
     if (colourPalette % 3 == 2)
@@ -278,7 +281,14 @@ void draw()
     }
     if (skyX + width < 0)
     {
-      skyX = width;
+      if (sans)
+      {
+        skyX = width * 5;
+      }
+      else
+      {
+        skyX = width;
+      }
     }
     if (sky2X + width < 0)
     {
@@ -358,7 +368,7 @@ void draw()
         p.show();
       }
 
-      if (pipenutte <= 5)
+      if (pipenutte <= 5 && !sans)
       {
         fill(dot);
         ellipse(p.x - 28, p.y/2 + p.yBottom/2 + 30, 15, 15);
@@ -383,6 +393,10 @@ void draw()
 
     if (!isAlive)
     {
+      if (sans)
+      {
+        exit();
+      }
       mode = 2;
       if (score > Integer.parseInt(highscore))
       {
@@ -496,7 +510,7 @@ void draw()
     rect(width/2 - 140, 50, 205, 45);
     fill(text);
     text("Back to Menu", width/2 - 135, 85);
-    if(SANS)
+    if(sans)
     {
       
     }
