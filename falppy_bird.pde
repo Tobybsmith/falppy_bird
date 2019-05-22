@@ -1,4 +1,3 @@
-//If this gives an error, please go to the Sketch
 import processing.sound.*;
 
 BufferedReader reader;
@@ -27,6 +26,7 @@ ArrayList<Pipe> pipeList = new ArrayList<Pipe>();
 
 float gravity = 0.35;
 float var = 200;
+float soundPercent = 1;
 
 int score = 0;
 int justScored;
@@ -187,9 +187,10 @@ void draw()
       background1 = loadImage("sansBkg.png");
       background2 = loadImage("sansBkg.png");
       sky1 = loadImage("sans.png");
-      pipeSpeed = 15;
-      pipeSpace = 0;
+      pipeSpeed = 10;
+      pipeSpace = 40;
       mode = 1;
+      ground = #ffffff;
     }
     
     if (mousePressed)
@@ -330,7 +331,7 @@ void draw()
       }
     }
 
-    if (frameCount%100 == 0)
+    if (frameCount%pipeSpace == 0)
     {
       pipeList.add(new Pipe());
       pipenutte++;
@@ -388,6 +389,10 @@ void draw()
     if (colourPalette % 3 == 0)
     {
       fill(#ff0000);
+    }
+    if (sans)
+    {
+      fill(255);
     }
     text(score, 50, 50);
 
@@ -467,6 +472,7 @@ void draw()
     strokeWeight(4);
     line(width/2 + 170, height/2 - 197, width/2 + 197, height/2 - 170);
     line(width/2 + 170, height/2 - 170, width/2 + 197, height/2 - 197);
+    
     if (mousePressed)
     {
       if (mouseX < width/2 + 197 && mouseX > width/2 + 170)
@@ -510,12 +516,29 @@ void draw()
     rect(width/2 - 140, 50, 205, 45);
     fill(text);
     text("Back to Menu", width/2 - 135, 85);
+    fill(box);
+    rect (width/2 - 405, 35, 110, 70);
+    fill (text);
+    text("Sound", width/2 - 395, 65);
+    rect (width/2 - 400, 85, 100 * soundPercent, 15);
+    
     if(sans)
     {
       
     }
     if (mousePressed)
     {
+      if (mouseY > 85 && mouseY < 110)
+      {
+        if (mouseX > width/2 - 400 && mouseX < width/2 - 300)
+        {
+          soundPercent = (mouseX - (width/2 - 400))/100.0;
+          System.out.println(soundPercent);
+          music.amp(0.3 * soundPercent);
+          flap.amp(0.1 * soundPercent);
+          death.amp(1 * soundPercent);
+        }
+      }
       if (mouseY > 50 && mouseY < 50 + 45)
       {
         if (mouseX > width/2 - 140 && mouseX < width/2 - 140 + 205)
