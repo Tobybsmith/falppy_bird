@@ -272,7 +272,7 @@ void draw()
       sky4X = sky4X + 10;
     }
 
-    if (colourPalette % 3 != 0) //draws the background if not palette 3
+    if (colourPalette % 3 != 0 || sans) //draws the background if not palette 3, unless it's sans mode
     {
       image(background1, bkgX, 0);
       image(background2, bkg2X, 0);
@@ -289,7 +289,7 @@ void draw()
       image(sky4, sky4X, 0);
     }
 
-    if (colourPalette % 3 == 0) //fills background with white if in palette 3
+    if (colourPalette % 3 == 0 && !sans) //fills background with white if in palette 3, unless on sans mode
     {
       fill(255);
       rect(0, 0, width, height);
