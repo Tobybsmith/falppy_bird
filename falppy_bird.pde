@@ -48,6 +48,7 @@ int sansX = 0; //x value of the background image for sans mode
 int sans2X = 1000; //x value of the copy of the background image for sans mode, so it can scroll and repeat
 int colourPalette = 1; //which color mode the player is in
 int beginnerPipe = 0; //counter so after the first few pipes the beginner dots stop appearing
+int instructionNum = 0; //counts which instruction menu the player is on
 
 boolean space = false; //boolean to prevent the space key from repeating without being released
 boolean isAlive = true; //boolean for if the palyer is alive or not
@@ -198,31 +199,46 @@ void draw()
       mode = 1;
       //changes the pipe color, the rest are for menus which will no longer be seen
       pipeColor = #ffffff;
+      //resets background
+      bkgX = 0;
+      bkg2X = 1000;
     }
     
     if (mousePressed) //checks if the player clicks on the boxes
     {
-      if (mouseX > boxX && mouseX < boxX + 200)
+      if (!justClicked)
       {
-        //1st Box (Play Button)
-        if (mouseY > boxY && mouseY < boxY + 50)
+        if (mouseX > boxX && mouseX < boxX + 200)
         {
-          mode = 1;
+          //1st Box (Play Button)
+          if (mouseY > boxY && mouseY < boxY + 50)
+          {
+            mode = 1;
+            justClicked = true;
+          }
+          //2nd Box (Instructions)
+          if (mouseY > 260 && mouseY < 260 + 50)
+          {
+            mode = 3;
+            justClicked = true;
+          }
+          //3rd Box (Credits)
+          if (mouseY > 330 && mouseY < 330 + 50)
+          {
+            mode = 4;
+            justClicked = true;
+          }
+          //4th Box (Customize)
+          if (mouseY > 400 && mouseY < 400 + 50)
+          {
+            mode = 5;
+            justClicked = true;
+          }
         }
-        //2nd Box (Instructions)
-        if (mouseY > 260 && mouseY < 260 + 50)
-        {
-          mode = 3;
-        }
-        //3rd Box (Credits)
-        if (mouseY > 330 && mouseY < 330 + 50)
-        {
-          //mode = 4;
-        }
-        if (mouseY > 400 && mouseY < 400 + 50)
-        {
-          mode = 5;
-        }
+      }
+      else
+      {
+        justClicked = false;
       }
     }
   } else if (mode == 1)
@@ -455,35 +471,118 @@ void draw()
   {
     background(background);
     fill(box); //how to play box
-    rect(width/2 - 200, height/2 - 200, 400, 400);
+    rect(width/2 - 200, height/2 - 160, 400, 400);
     textSize(50);
     fill(text);
-    text("How to Play", width/2 - 145, height/2 - 130);
+    text("How to Play", width/2 - 145, height/2 - 90);
     textSize(30);
-    text("Press space to jump!", width/2 - 180, height/2 - 60); //instructions
-    text("Avoid the pipes!", width/2 - 180, height/2 - 20);
-    text("Jump on lil nodes (yellow)", width/2 - 180, height/2 + 20);
-    text("If your name happens to \nbe Mr. Jamieson, please\ngive this project 100%", width/2 - 180, height/2 + 60);
-
-    stroke(text);
-    strokeWeight(4); //draws in corner
-    line(width/2 + 170, height/2 - 197, width/2 + 197, height/2 - 170);
-    line(width/2 + 170, height/2 - 170, width/2 + 197, height/2 - 197);
-    
-    if (mousePressed) //checks if player clicks x
+    if (instructionNum == 0)
     {
-      if (mouseX < width/2 + 197 && mouseX > width/2 + 170)
+      text("Press space or click to\njump!\nAvoid the pipes!\nIf your name happens to \nbe Mr. Jamieson, please\ngive this project 100%!", width/2 - 180, height/2 - 20); //instructions 1
+    }
+    if (instructionNum == 1)
+    {
+      text("The first few pipes\nshow a training dot,\nuse it if you need\nhelp knowing where to\njump.", width/2 - 180, height/2); //instructions 2
+    }
+    if (instructionNum == 2)
+    {
+      text("Pro mode turns on\nhigh contrast\npipes for increased\nvisibility. Turn it\non in customize.", width/2 - 180, height/2 - 20); //instructions 3
+    }
+    if (instructionNum == 3)
+    {
+      text("You can change your\ncharacter in customize,\njust click on the image\nyou want to be.", width/2 - 180, height/2 - 20); //instructions 4
+    }
+    if (instructionNum == 4)
+    {
+      text("Want to get right back\ninto the action?\nPress space on the death\nscreen to restart right\naway", width/2 - 180, height/2 - 20); //instructions 5
+    }
+    stroke(text);
+    strokeWeight(4); //draws x in corner
+    line(width/2 + 170, height/2 - 157, width/2 + 197, height/2 - 130);
+    line(width/2 + 170, height/2 - 130, width/2 + 197, height/2 - 157);
+    
+    strokeWeight(0);
+    fill(box); //previous instructions box
+    rect(width/2 - 200, height/2 - 215, 175, 50);
+    fill(text);
+    text("Previous", width/2 - 175, height/2 - 180);
+    fill(box); //next instructions box
+    rect(width/2 + 25, height/2 - 215, 175, 50);
+    fill(text);
+    text("Next", width/2 + 75, height/2 - 180);
+    
+   
+    if (mousePressed) //checks if player clicks x or one of the buttons
+    {
+      if (!justClicked) //makes sure the player hasn't just clicked
       {
-        if (mouseY > height/2 - 197 && mouseY < width/2 - 170)
+        if (mouseX < width/2 + 197 && mouseX > width/2 + 170)
         {
-          mode = 0;
+          if (mouseY < height/2 - 130 && mouseY > height/2 - 157)
+          {
+            mode = 0;
+          }
+        }
+        if (mouseY < height/2 - 160 && mouseY > height/2 - 210)
+        {
+          if (mouseX > width/2 + 25 && mouseX < width/2 + 200)
+          {
+            justClicked = true; //so it only counts once per click
+            instructionNum ++; //go to the next instructions
+          }
+          if (mouseX > width/2 - 200 && mouseX < width/2 - 25)
+          {
+            justClicked = true; //so it only counts once per click
+            instructionNum --; //go to the previous instructions
+          }
         }
       }
     }
-  } else if (mode == 4) //incomplete
+    else //if you didn't click, reset justClicked
+    {
+      justClicked = false;
+    }
+    if (instructionNum < 0)
+    {
+      instructionNum = 4; //reset to last instruction if before the first one
+    }
+    if (instructionNum > 4)
+    {
+      instructionNum = 0; //reset to first instruction if through the other two
+    }
+  } else if (mode == 4) //credits
   {
-    mode = 1;
-  } else if (mode == 5) //customize screen
+    background(background);
+    fill(box); //credits box
+    rect(width/2 - 200, height/2 - 25, 400, 125);
+    fill(text); //credits text
+    text("By: Toby and Malachi", width/2 - 150, height/2 + 25);
+    text("We hope you enjoyed!", width/2 - 160, height/2 + 75);
+    //back button
+    fill(box);
+    rect(width/2 - 75, height/2 - 100, 150, 50);
+    fill(text);
+    text("Back", width/2 - 35, height/2 - 65);
+    if (mousePressed)
+    {
+      if (!justClicked)
+      {
+        if (mouseY > height/2 - 100 && mouseY < height/2 - 50)
+        {
+          if (mouseX > width/2 - 75 && mouseX < width/2 + 75)
+          {
+            mode = 0; //if clicked the back button, go back to the menu
+            justClicked = true;
+          }
+        }
+      }
+      else
+      {
+        justClicked = false;
+      }
+    }
+  }
+  else if (mode == 5) //customize screen
   {
 
     background(background);
