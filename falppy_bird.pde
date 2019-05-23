@@ -1,4 +1,6 @@
-import processing.sound.*; //processing sound library, for sound
+import processing.sound.*; 
+//in the event that the skeych won't run, please go to the Sketch tab on the upper bar, 
+//click on Import Library, and then import the Sound Library
 
 BufferedReader reader; //reader for high score text file
 PrintWriter output; //writer for high score text file
@@ -703,7 +705,7 @@ void draw()
             text = #FF5722;
             background = #4fc3f7;
             box = #ffc107;
-            pipeColor = #1b5e20;
+            pipeColor = #75ff33;
           }
           if (colourPalette % 3 == 2)
           {
